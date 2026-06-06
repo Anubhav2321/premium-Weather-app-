@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexGen Project Documentation Portal</title>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body class="portal-body">
+    
+    <!-- Atmospheric background video overlay matching main dashboard -->
+    <div class="video-background">
+        <video id="bg-video" autoplay loop muted playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-floating-white-clouds-in-a-blue-sky-4432-large.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay" style="background: rgba(7, 11, 25, 0.88);"></div>
+    </div>
+
+    <!-- Navigation Portal Sidebar -->
+    <nav class="portal-sidebar">
+        <div class="portal-brand">
+            <i class='bx bx-cube-alt'></i>
+            <span>Portal Hub</span>
+        </div>
+        <div class="portal-nav-links">
+            <a href="#user-guide" class="portal-nav-item active" data-target="user-guide">
+                <i class='bx bx-book-open'></i> <span>User Guide</span>
+            </a>
+            <a href="#architecture" class="portal-nav-item" data-target="architecture">
+                <i class='bx bx-layer'></i> <span>System Tech</span>
+            </a>
+            <a href="#api-health" class="portal-nav-item" data-target="api-health">
+                <i class='bx bx-activity'></i> <span>API Metrics</span>
+            </a>
+            <a href="#developer" class="portal-nav-item" data-target="developer">
+                <i class='bx bx-terminal'></i> <span>Developer Hub</span>
+            </a>
+        </div>
+        <div class="portal-sidebar-footer">
+            <span>v1.2.0 Active</span>
+        </div>
+    </nav>
+
+    <!-- Main Documentation Scroll Panel -->
+    <main class="portal-main">
+        <!-- Top bar with digital clock and link back to weather application -->
+        <header class="portal-topbar">
+            <div class="topbar-left">
+                <h2>Advanced Project Dashboard</h2>
+                <span id="portal-live-clock">--:--:-- PM</span>
+            </div>
+            <div class="topbar-right">
+                <a href="/" class="back-app-btn">
+                    <i class='bx bx-left-arrow-alt'></i>
+                    <span>Weather App</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Sections -->
+        <div class="portal-scroll-container">
+            
+            <!-- Section 1: User Guide -->
+            <section id="user-guide" class="portal-section active">
+                <div class="section-banner">
+                    <h3>User Operations Guide</h3>
+                    <p>Understanding interactive variables, geolocation hooks, and system gestures.</p>
+                </div>
+                
+                <div class="user-guide-grid">
+                    <div class="guide-card">
+                        <div class="guide-number">01</div>
+                        <h4>Auto-Location Sync</h4>
+                        <p>Upon initial page load, the browser triggers an HTML5 GPS query. Selecting 'Allow' extracts geographic coordinates (Latitude & Longitude), center-pans Leaflet maps, and syncs weather details instantly.</p>
+                    </div>
+                    <div class="guide-card">
+                        <div class="guide-number">02</div>
+                        <h4>Search & Dropdowns</h4>
+                        <p>Clicking inside the location input field displays a "Recent Searches" history dropdown. Pressing 'Enter' or clicking results queries the backend, appending queries to history parameters stored in LocalStorage.</p>
+                    </div>
+                    <div class="guide-card">
+                        <div class="guide-number">03</div>
+                        <h4>Radar Map Overlays</h4>
+                        <p>The integrated dark Leaflet satellite map serves real-time layer overlays (Atmospheric clouds/precipitation) pulled directly from OpenWeatherMap tile clusters using dynamic keys passed from backend routes.</p>
+                    </div>
+                    <div class="guide-card">
+                        <div class="guide-number">04</div>
+                        <h4>VFX Overlays Sync</h4>
+                        <p>The system automatically switches visual looping backdrops (rain, moving clouds, snow, or mist) and coordinates Three.js particle velocities, fog limits, and lighting profiles to reflect local weather reports.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Architecture & Tech Stack -->
+            <section id="architecture" class="portal-section">
+                <div class="section-banner">
+                    <h3>System Architecture & Tech Stack</h3>
+                    <p>Details breaking down python backend APIs, Leaflet mapping components, and WebGL graphics engines.</p>
+                </div>
+
+                <div class="tech-stack-container">
+                    <h4>Component Integration Matrix</h4>
+                    <table class="portal-table">
+                        <thead>
+                            <tr>
+                                <th>System Layer</th>
+                                <th>Framework / Tech</th>
+                                <th>Implementation Role</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Backend API</strong></td>
+                                <td>Python / Flask</td>
+                                <td>Handles geolocation routing, packs 8-day daily forecast summaries, and secures credentials.</td>
+                                <td><span class="status-badge green">Operational</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>3D VFX Particles</strong></td>
+                                <td>Three.js (WebGL)</td>
+                                <td>Compiles custom falling particles, cloud billboards, lightning triggers, and camera parallax.</td>
+                                <td><span class="status-badge green">Operational</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Interactive Maps</strong></td>
+                                <td>Leaflet.js</td>
+                                <td>Embeds coordinates tracking markers, dark carto tilesheets, and precipitation layers.</td>
+                                <td><span class="status-badge green">Operational</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data Graphics</strong></td>
+                                <td>Chart.js</td>
+                                <td>Draws line/bar trends for temperature, wind speeds, and rain forecasts dynamically.</td>
+                                <td><span class="status-badge green">Operational</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Design Theme</strong></td>
+                                <td>Frosted Glass CSS</td>
+                                <td>Applies acrylic blur filters, 3D card tilt variables, and Day/Night color states.</td>
+                                <td><span class="status-badge green">Active</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="architecture-visual">
+                    <h4>API Communication Flow</h4>
+                    <div class="flow-diag-card">
+                        <div class="flow-node">
+                            <i class='bx bx-user-voice'></i>
+                            <h5>Client Browser</h5>
+                            <p>Geolocation / Input Search</p>
+                        </div>
+                        <div class="flow-arrow"><i class='bx bx-right-arrow-alt'></i></div>
+                        <div class="flow-node">
+                            <i class='bx bx-server'></i>
+                            <h5>Flask Server</h5>
+                            <p>Query parameters validator</p>
+                        </div>
+                        <div class="flow-arrow"><i class='bx bx-right-arrow-alt'></i></div>
+                        <div class="flow-node">
+                            <i class='bx bx-cloud-lightrain'></i>
+                            <h5>OpenWeather API</h5>
+                            <p>Hourly & Daily endpoints</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Live API Health & Metrics -->
+            <section id="api-health" class="portal-section">
+                <div class="section-banner">
+                    <h3>Live API Health & Metrics</h3>
+                    <p>Real-time analytics displaying weather backend query latencies and server nodes uptime status.</p>
+                </div>
+
+                <div class="metrics-summary-grid">
+                    <div class="metric-mini-card">
+                        <span>Node Status</span>
+                        <h3>Online</h3>
+                        <div class="pulse-indicator-portal green"></div>
+                    </div>
+                    <div class="metric-mini-card">
+                        <span>Avg Latency</span>
+                        <h3 id="avg-latency-display">120 ms</h3>
+                    </div>
+                    <div class="metric-mini-card">
+                        <span>API Status</span>
+                        <h3>Active (200)</h3>
+                    </div>
+                    <div class="metric-mini-card">
+                        <span>System Uptime</span>
+                        <h3>99.98 %</h3>
+                    </div>
+                </div>
+
+                <div class="metrics-chart-container">
+                    <div class="chart-header-portal">
+                        <h4>API Query Latency (Real-time Tracker)</h4>
+                        <span class="live-pulse"><span class="pulse-dot"></span> LIVE DATA FEED</span>
+                    </div>
+                    <div class="portal-canvas-wrapper">
+                        <canvas id="latencyChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Developer Hub -->
+            <section id="developer" class="portal-section">
+                <div class="section-banner">
+                    <h3>Developer Portfolio Hub</h3>
+                    <p>Developer credentials, full-stack competencies, and open-source system deployments.</p>
+                </div>
+
+                <div class="developer-profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar"><i class='bx bx-code-alt'></i></div>
+                        <div class="profile-info">
+                            <h4>Antigravity Systems Architect</h4>
+                            <span>Full-Stack Engineer / WebGL Designer</span>
+                        </div>
+                    </div>
+                    
+                    <p class="profile-about">
+                        Specialized in developing high-performance web applications combining Python architectures with GPU-accelerated graphics engines. Focus areas include fluid simulation particles systems, responsive micro-interactions layouts, and secure API microservices.
+                    </p>
+
+                    <div class="competencies-grid">
+                        <div class="comp-tag"><i class='bx bxl-python'></i> Python / Flask</div>
+                        <div class="comp-tag"><i class='bx bxl-javascript'></i> JavaScript (ES6+)</div>
+                        <div class="comp-tag"><i class='bx bx-cube'></i> WebGL / Three.js</div>
+                        <div class="comp-tag"><i class='bx bx-git-branch'></i> Git Versioning</div>
+                        <div class="comp-tag"><i class='bx bx-data'></i> SQL / REST APIs</div>
+                        <div class="comp-tag"><i class='bx bx-palette'></i> Premium CSS / UX</div>
+                    </div>
+
+                    <div class="profile-links-row">
+                        <a href="https://github.com" target="_blank" class="dev-link-btn github">
+                            <i class='bx bxl-github'></i> Github Profile
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" class="dev-link-btn linkedin">
+                            <i class='bx bxl-linkedin-square'></i> LinkedIn Connect
+                        </a>
+                        <a href="/" class="dev-link-btn weather">
+                            <i class='bx bx-meteor'></i> Live Weather Node
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Script imports -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 /**
- * NexGen Weather - Main Application Front-end Logic (Automatic VFX, 8-Day Forecast & Geolocation Edition)
+ * NexGen Weather - Main Application Front-end Logic (VFX, Geolocation, Tabs & History Edition)
  * Orchestrates API queries, UI layouts, interactive charts, Leaflet maps, and WebGL VFX.
  */
 
@@ -7,11 +7,13 @@
 let threeWeather = null;
 let leafletMap = null;
 let mapTileLayer = null;
+let mapCloudsOverlay = null;
 let mapMarker = null;
 let forecastChart = null;
 let currentWeatherData = null; 
 let selectedUnit = 'C'; // C or F
 let userThemeOverride = null; // 'day', 'night', or null (automatic)
+let activeChartTab = 'overview'; // 'overview', 'precipitation', 'wind'
 
 // Popular cities for autocomplete list
 const popularCities = [
@@ -97,8 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. Start Three.js Canvas background
     threeWeather = new ThreeWeather('three-bg-canvas');
 
-    // 3. Load default city
-    fetchWeather("Kolkata");
+    // 3. Trigger Browser Geolocation prompt immediately on Hit
+    triggerInitialGeolocation();
 
     // 4. Register search input events
     const input = document.getElementById('city-input');
@@ -119,27 +121,53 @@ document.addEventListener("DOMContentLoaded", () => {
     // 5. Autocomplete implementation
     setupAutocomplete(input);
 
-    // 6. 3D Card Tilt registration
+    // 6. Recent Searches dropdown hooks
+    setupRecentSearches(input);
+
+    // 7. 3D Card Tilt registration
     setupCard3DTilt();
 
-    // 7. Unit Toggler (°C / °F)
+    // 8. Unit Toggler (°C / °F)
     setupUnitToggler();
 
-    // 8. Dynamic Digital Clock
+    // 9. Dynamic Digital Clock
     startClock();
 
-    // 9. Voice Recognition Search setup
+    // 10. Voice Recognition Search setup
     setupVoiceSearch();
 
-    // 10. Theme Toggler Button Setup (allows manual override)
+    // 11. Theme Toggler Button Setup (allows manual override)
     setupThemeToggleButton();
 
-    // 11. HTML5 Geolocation Current Location button click setup
+    // 12. HTML5 Geolocation Current Location button click setup
     setupGeolocationBtn();
 
-    // 12. Smooth navigation scrolling
+    // 13. Forecast line chart tab toggles
+    setupForecastChartTabs();
+
+    // 14. Smooth navigation scrolling
     setupSidebarNavigation();
 });
+
+// Prompt coordinates GPS locator
+function triggerInitialGeolocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                fetchWeatherByCoords(lat, lon);
+            },
+            (err) => {
+                console.warn("Location permission rejected or timed out, loading default city:", err.message);
+                fetchWeather("Kolkata");
+            },
+            { enableHighAccuracy: true, timeout: 6000 }
+        );
+    } else {
+        fetchWeather("Kolkata");
+    }
+}
 
 // ==========================================
 // Weather Fetch & API Integration
@@ -162,7 +190,7 @@ async function fetchWeather(city) {
 async function fetchWeatherByCoords(lat, lon) {
     const locBtn = document.getElementById('location-btn');
     if (locBtn) {
-        locBtn.classList.add('recording'); // Pulses icon to indicate loading GPS coordinates
+        locBtn.classList.add('recording'); 
     }
     
     try {
@@ -171,7 +199,6 @@ async function fetchWeatherByCoords(lat, lon) {
 
         if (response.ok) {
             handleAPIResponse(data);
-            // Clean text box input
             document.getElementById('city-input').value = '';
         } else {
             alert(data.error || "Coordinates query failed!");
@@ -189,12 +216,16 @@ async function fetchWeatherByCoords(lat, lon) {
 function handleAPIResponse(data) {
     currentWeatherData = data;
     
+    // Save to search history array
+    addToRecentHistory(data.city);
+
     // Reset manual overrides so it automatically syncs local time of new locations!
     userThemeOverride = null;
     localStorage.removeItem('themeOverride');
 
     // Clean autocomplete suggestions list
     document.getElementById('suggestions-box').style.display = 'none';
+    document.getElementById('recent-box').style.display = 'none';
 
     // Auto determine day vs night mode for city timezone parameters
     const isDayTime = data.dt >= data.sunrise && data.dt < data.sunset;
@@ -214,6 +245,20 @@ function handleAPIResponse(data) {
 
     // Highlight location pills if matches
     updatePillHighlights(data.city);
+
+    // Dismiss skeleton loader loader smoothly
+    dismissSkeletonLoader();
+}
+
+function dismissSkeletonLoader() {
+    const loader = document.getElementById('skeleton-loader');
+    if (loader && loader.style.display !== 'none') {
+        loader.style.transition = 'opacity 0.6s ease';
+        loader.style.opacity = '0';
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 600);
+    }
 }
 
 // Global quick-selection helper
@@ -406,49 +451,86 @@ function setupCard3DTilt() {
 // ==========================================
 // Forecast Chart.js Configuration
 // ==========================================
+function setupForecastChartTabs() {
+    const tabs = document.querySelectorAll('.chart-tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            activeChartTab = tab.getAttribute('data-tab');
+            if (currentWeatherData) {
+                updateChart(currentWeatherData.hourly);
+            }
+        });
+    });
+}
+
 function updateChart(hourlyData) {
     const ctx = document.getElementById('forecastChart');
     if (!ctx) return;
 
     const labels = hourlyData.map(item => item.time);
-    let temps = hourlyData.map(item => item.temp);
-
-    // Convert values if selected unit is Fahrenheit
-    if (selectedUnit === 'F') {
-        temps = temps.map(t => Math.round(t * 1.8 + 32));
+    
+    // Choose data fields based on active tab
+    let chartData = [];
+    let labelString = '';
+    
+    if (activeChartTab === 'precipitation') {
+        chartData = hourlyData.map(item => item.pop); // precip probability (0-100%)
+        labelString = 'Rain Probability (%)';
+    } else if (activeChartTab === 'wind') {
+        chartData = hourlyData.map(item => item.wind_speed); // wind speeds
+        labelString = 'Wind Speed (m/s)';
+    } else {
+        // Default Overview (Temperature)
+        chartData = hourlyData.map(item => item.temp);
+        if (selectedUnit === 'F') {
+            chartData = chartData.map(t => Math.round(t * 1.8 + 32));
+        }
+        labelString = `Temperature (°${selectedUnit})`;
     }
 
     if (forecastChart) {
         forecastChart.destroy();
     }
 
-    // Set custom visual gradient fill based on Day/Night theme parameters
     const canvasCtx = ctx.getContext('2d');
     const grad = canvasCtx.createLinearGradient(0, 0, 0, 180);
     
     const isDay = document.body.classList.contains('day-mode');
-    const themeColor = document.documentElement.style.getPropertyValue('--theme-color').trim() || (isDay ? '#0284c7' : '#38bdf8');
+    
+    // Assign custom dynamic neon colors based on tab type
+    let strokeColor = '';
+    if (activeChartTab === 'precipitation') strokeColor = '#00e5ff'; // Neon Cyan
+    else if (activeChartTab === 'wind') strokeColor = '#c084fc'; // Purple
+    else strokeColor = document.documentElement.style.getPropertyValue('--theme-color').trim() || (isDay ? '#0284c7' : '#38bdf8');
+
     const gridColor = isDay ? 'rgba(15, 23, 42, 0.06)' : 'rgba(255, 255, 255, 0.05)';
     const textColor = isDay ? '#475569' : '#94a3b8';
 
-    grad.addColorStop(0, hexToRGBA(themeColor, 0.35));
-    grad.addColorStop(1, hexToRGBA(themeColor, 0));
+    grad.addColorStop(0, hexToRGBA(strokeColor, 0.35));
+    grad.addColorStop(1, hexToRGBA(strokeColor, 0));
+
+    // For precipitation, use a bar chart for premium visualization contrast
+    const chartType = activeChartTab === 'precipitation' ? 'bar' : 'line';
 
     forecastChart = new Chart(canvasCtx, {
-        type: 'line',
+        type: chartType,
         data: {
             labels: labels,
             datasets: [{
-                label: `Temp (°${selectedUnit})`,
-                data: temps,
-                borderColor: themeColor,
-                backgroundColor: grad,
-                borderWidth: 3,
+                label: labelString,
+                data: chartData,
+                borderColor: strokeColor,
+                backgroundColor: chartType === 'bar' ? hexToRGBA(strokeColor, 0.6) : grad,
+                borderWidth: chartType === 'bar' ? 1 : 3,
+                borderRadius: chartType === 'bar' ? 6 : 0,
                 fill: true,
                 tension: 0.4,
                 pointBackgroundColor: '#ffffff',
-                pointBorderColor: themeColor,
-                pointRadius: 4,
+                pointBorderColor: strokeColor,
+                pointRadius: chartType === 'bar' ? 0 : 4,
                 pointHoverRadius: 7
             }]
         },
@@ -458,7 +540,9 @@ function updateChart(hourlyData) {
             scales: {
                 y: {
                     grid: { color: gridColor },
-                    ticks: { color: textColor, font: { family: 'Outfit', size: 12 } }
+                    ticks: { color: textColor, font: { family: 'Outfit', size: 12 } },
+                    suggestedMin: activeChartTab === 'precipitation' ? 0 : undefined,
+                    suggestedMax: activeChartTab === 'precipitation' ? 100 : undefined
                 },
                 x: {
                     grid: { display: false },
@@ -505,7 +589,12 @@ function updateMap(lat, lon, cityName) {
         : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 
     if (!leafletMap) {
-        leafletMap = L.map('weather-map', { zoomControl: true }).setView([lat, lon], 11);
+        // Enable scroll to zoom and drag to pan fully
+        leafletMap = L.map('weather-map', { 
+            zoomControl: true,
+            scrollWheelZoom: true,
+            dragging: true 
+        }).setView([lat, lon], 10);
 
         mapTileLayer = L.tileLayer(tileUrl, {
             attribution: '&copy; OpenStreetMap &copy; CARTO'
@@ -520,11 +609,22 @@ function updateMap(lat, lon, cityName) {
         mapMarker = L.marker([lat, lon], { icon: pulseIcon }).addTo(leafletMap);
         mapMarker.bindPopup(`<b>${cityName} Satellite Node</b><br>Lat: ${lat.toFixed(2)}, Lon: ${lon.toFixed(2)}`).openPopup();
     } else {
-        // Pan map smoothly to new coords and update layer
-        leafletMap.setView([lat, lon], 11);
+        leafletMap.setView([lat, lon], 10);
         mapTileLayer.setUrl(tileUrl);
         mapMarker.setLatLng([lat, lon]);
         mapMarker.getPopup().setContent(`<b>${cityName} Satellite Node</b><br>Lat: ${lat.toFixed(2)}, Lon: ${lon.toFixed(2)}`).openPopup();
+    }
+
+    // Toggle live Clouds radar overlay using OWM tile server keys
+    if (mapCloudsOverlay) {
+        leafletMap.removeLayer(mapCloudsOverlay);
+    }
+    
+    if (currentWeatherData && currentWeatherData.weather_api_key) {
+        mapCloudsOverlay = L.tileLayer(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${currentWeatherData.weather_api_key}`, {
+            maxZoom: 18,
+            opacity: 0.5
+        }).addTo(leafletMap);
     }
 }
 
@@ -579,6 +679,67 @@ function setDayNightMode(isDay) {
     if (threeWeather) {
         threeWeather.setDayMode(isDay);
     }
+}
+
+// ==========================================
+// Recent Searches Dropdown & History
+// ==========================================
+function setupRecentSearches(input) {
+    const recentBox = document.getElementById('recent-box');
+    const suggestionsBox = document.getElementById('suggestions-box');
+    if (!recentBox || !suggestionsBox) return;
+
+    // Show recent history on focusing input
+    input.addEventListener('focus', () => {
+        if (suggestionsBox.style.display !== 'block') {
+            const list = JSON.parse(localStorage.getItem('recentSearches') || '[]');
+            if (list.length > 0) {
+                renderRecentList(list);
+                recentBox.style.display = 'block';
+            }
+        }
+    });
+
+    // Hide dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        if (e.target !== input && !recentBox.contains(e.target) && !suggestionsBox.contains(e.target)) {
+            recentBox.style.display = 'none';
+            suggestionsBox.style.display = 'none';
+        }
+    });
+}
+
+function addToRecentHistory(cityName) {
+    if (!cityName) return;
+    let recent = JSON.parse(localStorage.getItem('recentSearches') || '[]');
+    
+    // Remove if duplicates exist
+    recent = recent.filter(c => c.toLowerCase() !== cityName.toLowerCase());
+    
+    // Add to front and slice
+    recent.unshift(cityName);
+    recent = recent.slice(0, 5); // Keep last 5 searches
+    
+    localStorage.setItem('recentSearches', JSON.stringify(recent));
+}
+
+function renderRecentList(list) {
+    const container = document.getElementById('recent-list');
+    const recentBox = document.getElementById('recent-box');
+    if (!container || !recentBox) return;
+
+    container.innerHTML = '';
+    list.forEach(city => {
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerHTML = `<i class='bx bx-history' style='margin-right: 8px; opacity: 0.5;'></i> ${city}`;
+        div.addEventListener('click', () => {
+            document.getElementById('city-input').value = city;
+            recentBox.style.display = 'none';
+            fetchWeather(city);
+        });
+        container.appendChild(div);
+    });
 }
 
 // ==========================================
@@ -643,11 +804,13 @@ function refreshUnitUI() {
 // ==========================================
 function setupAutocomplete(input) {
     const suggestions = document.getElementById('suggestions-box');
-    if (!suggestions) return;
+    const recentBox = document.getElementById('recent-box');
+    if (!suggestions || !recentBox) return;
 
     input.addEventListener('input', () => {
         const val = input.value.trim().toLowerCase();
         suggestions.innerHTML = '';
+        recentBox.style.display = 'none'; // hide recent dropdown during autocomplete typing
 
         if (!val) {
             suggestions.style.display = 'none';
@@ -673,12 +836,6 @@ function setupAutocomplete(input) {
         });
 
         suggestions.style.display = 'block';
-    });
-
-    document.addEventListener('click', (e) => {
-        if (e.target !== input && e.target !== suggestions) {
-            suggestions.style.display = 'none';
-        }
     });
 }
 

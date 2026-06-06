@@ -14,6 +14,10 @@ API_KEY = os.getenv("WEATHER_API_KEY")
 def home():
     return render_template("index.html")
 
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
+
 @app.route("/api/weather")
 def get_weather():
     city = request.args.get("city")
@@ -70,7 +74,9 @@ def get_weather():
             time_str = datetime.utcfromtimestamp(item["dt"]).strftime('%I %p')
             hourly_list.append({
                 "time": time_str,
-                "temp": round(item["main"]["temp"])
+                "temp": round(item["main"]["temp"]),
+                "pop": round(item.get("pop", 0) * 100),
+                "wind_speed": round(item["wind"].get("speed", 0), 1)
             })
             
         weather_data["hourly"] = hourly_list
@@ -140,6 +146,7 @@ def get_weather():
             })
             
         weather_data["daily"] = daily_list[:8]
+        weather_data["weather_api_key"] = API_KEY
 
         return jsonify(weather_data)
 

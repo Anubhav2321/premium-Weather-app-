@@ -11,6 +11,42 @@
 </head>
 <body>
     
+    <!-- Frosted wave skeleton loader overlay -->
+    <div id="skeleton-loader" class="skeleton-overlay">
+        <div class="skeleton-container">
+            <div class="skeleton-sidebar">
+                <div class="skeleton-circle sidebar-circle"></div>
+                <div class="skeleton-bar sidebar-bar"></div>
+                <div class="skeleton-bar sidebar-bar"></div>
+                <div class="skeleton-bar sidebar-bar"></div>
+            </div>
+            <div class="skeleton-content">
+                <div class="skeleton-header">
+                    <div class="skeleton-bar title-bar"></div>
+                    <div class="skeleton-bar pill-bar"></div>
+                    <div class="skeleton-bar search-bar-sk"></div>
+                </div>
+                <div class="skeleton-grid-sk">
+                    <div class="skeleton-card hero-card-sk"></div>
+                    <div class="skeleton-right">
+                        <div class="skeleton-grid-cards">
+                            <div class="skeleton-card mini-card-sk"></div>
+                            <div class="skeleton-card mini-card-sk"></div>
+                            <div class="skeleton-card mini-card-sk"></div>
+                            <div class="skeleton-card mini-card-sk"></div>
+                            <div class="skeleton-card mini-card-sk"></div>
+                            <div class="skeleton-card mini-card-sk"></div>
+                            <div class="skeleton-card mini-card-sk"></div>
+                            <div class="skeleton-card mini-card-sk"></div>
+                        </div>
+                        <div class="skeleton-card chart-card-sk"></div>
+                        <div class="skeleton-card map-card-sk"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Video background elements (underneath WebGL canvas) -->
     <div class="video-background">
         <video id="bg-video" autoplay loop muted playsinline>
@@ -64,7 +100,7 @@
                 <div class="location-pill" onclick="quickSearch('Sydney')">Sydney</div>
             </div>
 
-            <!-- Search bar with voice search and custom suggestions -->
+            <!-- Search bar with voice search, coordinates lock, suggestions and recent history -->
             <div class="search-box-container">
                 <div class="search-box">
                     <i class='bx bx-search' id="search-btn"></i>
@@ -77,11 +113,28 @@
                     </button>
                 </div>
                 <div class="suggestions-dropdown" id="suggestions-box"></div>
+                <!-- Recent Searches History -->
+                <div class="suggestions-dropdown recent-dropdown" id="recent-box">
+                    <div class="recent-header">
+                        <i class='bx bx-history'></i>
+                        <span>Recent Searches</span>
+                    </div>
+                    <div id="recent-list"></div>
+                </div>
             </div>
 
-            <!-- Day/Night mode Toggle -->
-            <div class="theme-toggle-container" id="theme-toggle-btn" title="Toggle Day/Night Mode">
-                <i class='bx bx-sun' id="theme-toggle-icon"></i>
+            <!-- Action buttons: Theme Toggler & Portal Link -->
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <!-- Day/Night mode Toggle -->
+                <div class="theme-toggle-container" id="theme-toggle-btn" title="Toggle Day/Night Mode">
+                    <i class='bx bx-sun' id="theme-toggle-icon"></i>
+                </div>
+
+                <!-- Advanced Project Portal link -->
+                <a href="/dashboard" class="dashboard-nav-btn" target="_blank" title="Advanced Project Portal">
+                    <i class='bx bx-cube-alt'></i>
+                    <span>Dashboard</span>
+                </a>
             </div>
         </header>
 
@@ -235,12 +288,17 @@
                     </div>
                 </div>
 
-                <!-- Temperature trend chart -->
+                <!-- Forecast Trend Panel with Dynamic Tabs -->
                 <div class="chart-panel" id="chart-section">
                     <div class="chart-header">
                         <div class="chart-title">
                             <i class='bx bx-pulse'></i>
-                            <span>Hourly Temperature Trend (Next 24h)</span>
+                            <span>Forecast Trends (Hourly)</span>
+                        </div>
+                        <div class="chart-tabs">
+                            <span class="chart-tab active" data-tab="overview">Overview</span>
+                            <span class="chart-tab" data-tab="precipitation">Precipitation</span>
+                            <span class="chart-tab" data-tab="wind">Wind</span>
                         </div>
                     </div>
                     <div class="chart-container">
