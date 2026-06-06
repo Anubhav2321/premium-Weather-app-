@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexGen Premium 3D Weather Dashboard</title>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</head>
+<body>
+    
+    <!-- Video background elements (underneath WebGL canvas) -->
+    <div class="video-background">
+        <video id="bg-video" autoplay loop muted playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-floating-white-clouds-in-a-blue-sky-4432-large.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Background WebGL canvas for interactive 3D particle systems -->
+    <canvas id="three-bg-canvas"></canvas>
+
+    <!-- Overlay fog line layers for depth -->
+    <div class="clouds-overlay"></div>
+
+    <!-- Navigation Sidebar -->
+    <nav class="sidebar">
+        <div class="brand-icon">
+            <i class='bx bx-meteor'></i>
+        </div>
+        
+        <div class="sidebar-nav">
+            <!-- Normal navigation -->
+            <a href="#" class="sidebar-link active" title="Weather Dashboard"><i class='bx bx-grid-alt'></i></a>
+            <a href="#" class="sidebar-link" title="Weather Map Layer" id="nav-map-btn"><i class='bx bx-map-alt'></i></a>
+            <a href="#" class="sidebar-link" title="Detailed Forecast Chart" id="nav-chart-btn"><i class='bx bx-line-chart'></i></a>
+        </div>
+
+        <span class="sim-section-title">Simulator</span>
+    </nav>
+
+    <!-- Main Dashboard Area -->
+    <main class="dashboard">
+        <!-- Top header containing Search bar, quick location selector, and current local time -->
+        <header class="top-header">
+            <div class="header-left">
+                <h1 id="header-city-title">Detecting Weather...</h1>
+                <div class="live-time-loc">
+                    <i class='bx bx-time-five'></i>
+                    <span id="digital-clock">00:00:00 PM</span>
+                    <span>•</span>
+                    <span id="header-date">Saturday, June 06</span>
+                </div>
+            </div>
+
+            <!-- Quick locations -->
+            <div class="quick-locations">
+                <div class="location-pill active" onclick="quickSearch('Kolkata')">Kolkata</div>
+                <div class="location-pill" onclick="quickSearch('London')">London</div>
+                <div class="location-pill" onclick="quickSearch('New York')">New York</div>
+                <div class="location-pill" onclick="quickSearch('Tokyo')">Tokyo</div>
+                <div class="location-pill" onclick="quickSearch('Sydney')">Sydney</div>
+            </div>
+
+            <!-- Search bar with voice search and custom suggestions -->
+            <div class="search-box-container">
+                <div class="search-box">
+                    <i class='bx bx-search' id="search-btn"></i>
+                    <input type="text" id="city-input" placeholder="Search city..." autocomplete="off">
+                    <button class="voice-search-btn" id="location-btn" title="Current Location" style="margin-right: 6px;">
+                        <i class='bx bx-target-lock'></i>
+                    </button>
+                    <button class="voice-search-btn" id="voice-btn" title="Voice Search">
+                        <i class='bx bx-microphone'></i>
+                    </button>
+                </div>
+                <div class="suggestions-dropdown" id="suggestions-box"></div>
+            </div>
+
+            <!-- Day/Night mode Toggle -->
+            <div class="theme-toggle-container" id="theme-toggle-btn" title="Toggle Day/Night Mode">
+                <i class='bx bx-sun' id="theme-toggle-icon"></i>
+            </div>
+        </header>
+
+        <!-- Main Dashboard grid layout -->
+        <div class="dashboard-grid">
+            <!-- Left panel containing 3D tilt hero card and VFX controller -->
+            <div class="left-panel">
+                <!-- 3D Perspective Tilt Card -->
+                <div class="hero-tilt-wrapper">
+                    <div class="hero-weather-card" id="tilt-card">
+                        <!-- Dynamic Weather 3D Icon Graphic -->
+                        <div class="weather-graphic-3d card-3d-element" id="weather-3d-icon">
+                            <i class='bx bx-sun'></i>
+                        </div>
+
+                        <!-- Big Temperature indicator -->
+                        <div class="temp-huge-container card-3d-element">
+                            <span class="temp-huge" id="temperature">--</span>
+                            <div class="temp-unit-toggle">
+                                <span class="active" id="unit-c">°C</span>
+                                <span style="font-size: 14px; opacity: 0.5;">/</span>
+                                <span id="unit-f">°F</span>
+                            </div>
+                        </div>
+
+                        <!-- Condition Name & Details -->
+                        <h2 class="weather-condition-title card-3d-element" id="condition">Loading...</h2>
+                        
+                        <div class="temp-extreme-caps card-3d-element">
+                            <span>H: <strong id="temp-high">--°</strong></span>
+                            <span>L: <strong id="temp-low">--°</strong></span>
+                        </div>
+
+                        <div class="feels-like-pill card-3d-element">
+                            <i class='bx bxs-thermometer'></i>
+                            <span>Feels like: <strong id="feels-like">--°</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weather info text -->
+                <div style="background: var(--bg-card); backdrop-filter: var(--glass-blur); border: 1px solid var(--border-color); border-radius: 24px; padding: 22px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; text-align: center;">
+                    <i class='bx bx-info-circle' style="color: var(--theme-color); font-size: 16px; vertical-align: middle; margin-right: 4px;"></i> 
+                    3D VFX atmospheric overlays are synchronized automatically based on local weather reports.
+                </div>
+            </div>
+
+            <!-- Right panel containing weather details, trend chart, and leaflet map -->
+            <div class="right-panel">
+                <!-- Weather Details Grid (8 Cards) -->
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="card-top">
+                            <span class="card-title">Feels Like</span>
+                            <div class="card-icon"><i class='bx bxs-thermometer'></i></div>
+                        </div>
+                        <div class="card-middle">
+                            <span class="card-value" id="grid-feels-like">--</span>
+                        </div>
+                        <p class="card-desc" id="feels-like-desc">What the temperature actually feels like on skin.</p>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="card-top">
+                            <span class="card-title">Wind Speed</span>
+                            <div class="card-icon spin-wind" id="wind-icon-container"><i class='bx bx-wind'></i></div>
+                        </div>
+                        <div class="card-middle">
+                            <span class="card-value" id="wind">--</span>
+                        </div>
+                        <p class="card-desc" id="wind-desc">Expected winds blowing gently across the region.</p>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="card-top">
+                            <span class="card-title">Humidity</span>
+                            <div class="card-icon"><i class='bx bx-water'></i></div>
+                        </div>
+                        <div class="card-middle">
+                            <span class="card-value" id="humidity">--</span>
+                        </div>
+                        <p class="card-desc" id="humidity-desc">Relative humidity of air masses in current conditions.</p>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="card-top">
+                            <span class="card-title">Visibility</span>
+                            <div class="card-icon"><i class='bx bx-show-alt'></i></div>
+                        </div>
+                        <div class="card-middle">
+                            <span class="card-value" id="visibility">--</span>
+                        </div>
+                        <p class="card-desc" id="visibility-desc">Distance at which objects can be clearly seen.</p>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="card-top">
+                            <span class="card-title">Barometric Pressure</span>
+                            <div class="card-icon"><i class='bx bx-tachometer'></i></div>
+                        </div>
+                        <div class="card-middle">
+                            <span class="card-value" id="pressure">--</span>
+                        </div>
+                        <p class="card-desc" id="pressure-desc">Force exerted by atmospheric weight overhead.</p>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="card-top">
+                            <span class="card-title">Dew Point</span>
+                            <div class="card-icon"><i class='bx bx-droplet'></i></div>
+                        </div>
+                        <div class="card-middle">
+                            <span class="card-value" id="dew-point">--</span>
+                        </div>
+                        <p class="card-desc" id="dew-point-desc">Temperature at which atmospheric moisture condenses.</p>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="card-top">
+                            <span class="card-title">UV Index</span>
+                            <div class="card-icon"><i class='bx bx-sun'></i></div>
+                        </div>
+                        <div class="card-middle">
+                            <span class="card-value" id="uv-index">--</span>
+                        </div>
+                        <p class="card-desc" id="uv-desc">Strength of ultraviolet solar radiation levels.</p>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="card-top">
+                            <span class="card-title">Sunrise & Sunset</span>
+                            <div class="card-icon"><i class='bx bx-navigation'></i></div>
+                        </div>
+                        <div class="card-middle">
+                            <span class="card-value" id="sunrise-sunset" style="font-size: 18px; font-weight: 600; letter-spacing: -0.5px; margin-top: 15px;">-- / --</span>
+                        </div>
+                        <p class="card-desc" id="sun-desc">Local sunrise and sunset coordinates for the city.</p>
+                    </div>
+                </div>
+
+                <!-- 8-Day Weather Overview Panel -->
+                <div class="forecast-panel" id="forecast-section">
+                    <div class="forecast-header">
+                        <div class="forecast-title">
+                            <i class='bx bx-calendar'></i>
+                            <span>8-Day Daily Forecast Overview</span>
+                        </div>
+                    </div>
+                    <div class="forecast-row" id="daily-forecast-container">
+                        <!-- Rendered dynamically in Javascript -->
+                    </div>
+                </div>
+
+                <!-- Temperature trend chart -->
+                <div class="chart-panel" id="chart-section">
+                    <div class="chart-header">
+                        <div class="chart-title">
+                            <i class='bx bx-pulse'></i>
+                            <span>Hourly Temperature Trend (Next 24h)</span>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="forecastChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Leaflet interactive map -->
+                <div class="map-panel" id="map-section">
+                    <div class="map-header">
+                        <div class="map-title">
+                            <i class='bx bx-map-pin'></i>
+                            <span>Satellite Coordinates & Pressure Map</span>
+                        </div>
+                    </div>
+                    <div id="weather-map"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Third-Party Library Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Application Scripts -->
+    <script src="{{ url_for('static', filename='js/effects.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
