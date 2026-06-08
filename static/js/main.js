@@ -22,43 +22,55 @@ const popularCities = [
     "Singapore", "Toronto", "Cape Town", "Reykjavik", "Vancouver"
 ];
 
-// Weather condition configs (Background videos and colors)
+// Weather condition configs (Background videos, colors, and overlay tints)
 const weatherConfigs = {
     clear: {
         video: "https://assets.mixkit.co/videos/preview/mixkit-floating-white-clouds-in-a-blue-sky-4432-large.mp4",
         color: "#0284c7",
         glow: "0 0 25px rgba(2, 132, 199, 0.3)",
-        icon: "<i class='bx bx-sun'></i>"
+        icon: "<i class='bx bx-sun'></i>",
+        overlayDay: "linear-gradient(180deg, rgba(135, 206, 250, 0.15) 0%, rgba(255, 248, 220, 0.1) 50%, rgba(135, 206, 250, 0.2) 100%)",
+        overlayNight: "linear-gradient(180deg, rgba(5, 10, 30, 0.3) 0%, rgba(10, 15, 35, 0.2) 40%, rgba(5, 10, 30, 0.35) 100%)"
     },
     clouds: {
         video: "https://assets.mixkit.co/videos/preview/mixkit-dark-clouds-drifting-across-the-sky-34676-large.mp4",
         color: "#64748b",
         glow: "0 0 25px rgba(100, 116, 139, 0.2)",
-        icon: "<i class='bx bx-cloud'></i>"
+        icon: "<i class='bx bx-cloud'></i>",
+        overlayDay: "linear-gradient(180deg, rgba(200, 210, 225, 0.25) 0%, rgba(180, 195, 215, 0.15) 50%, rgba(200, 210, 225, 0.3) 100%)",
+        overlayNight: "linear-gradient(180deg, rgba(10, 15, 30, 0.35) 0%, rgba(15, 20, 35, 0.25) 40%, rgba(10, 15, 30, 0.4) 100%)"
     },
     rain: {
         video: "https://assets.mixkit.co/videos/preview/mixkit-rain-falling-on-a-window-pane-14186-large.mp4",
         color: "#0ea5e9",
         glow: "0 0 25px rgba(14, 165, 233, 0.35)",
-        icon: "<i class='bx bx-cloud-rain'></i>"
+        icon: "<i class='bx bx-cloud-rain'></i>",
+        overlayDay: "linear-gradient(180deg, rgba(100, 150, 200, 0.2) 0%, rgba(80, 130, 180, 0.15) 50%, rgba(100, 150, 200, 0.25) 100%)",
+        overlayNight: "linear-gradient(180deg, rgba(5, 10, 25, 0.3) 0%, rgba(8, 15, 30, 0.2) 40%, rgba(5, 10, 25, 0.35) 100%)"
     },
     storm: {
         video: "https://assets.mixkit.co/videos/preview/mixkit-thunderstorm-with-lightning-flashes-in-the-night-42289-large.mp4",
         color: "#a855f7",
         glow: "0 0 25px rgba(168, 85, 247, 0.4)",
-        icon: "<i class='bx bx-cloud-lightning'></i>"
+        icon: "<i class='bx bx-cloud-lightning'></i>",
+        overlayDay: "linear-gradient(180deg, rgba(80, 60, 100, 0.2) 0%, rgba(60, 50, 80, 0.15) 50%, rgba(80, 60, 100, 0.25) 100%)",
+        overlayNight: "linear-gradient(180deg, rgba(5, 3, 15, 0.3) 0%, rgba(10, 5, 20, 0.2) 40%, rgba(5, 3, 15, 0.35) 100%)"
     },
     snow: {
         video: "https://assets.mixkit.co/videos/preview/mixkit-snow-falling-on-pine-trees-31649-large.mp4",
         color: "#3b82f6",
         glow: "0 0 25px rgba(59, 130, 246, 0.3)",
-        icon: "<i class='bx bx-cloud-snow'></i>"
+        icon: "<i class='bx bx-cloud-snow'></i>",
+        overlayDay: "linear-gradient(180deg, rgba(220, 230, 245, 0.2) 0%, rgba(200, 215, 240, 0.1) 50%, rgba(220, 230, 245, 0.25) 100%)",
+        overlayNight: "linear-gradient(180deg, rgba(8, 12, 25, 0.25) 0%, rgba(12, 18, 30, 0.15) 40%, rgba(8, 12, 25, 0.3) 100%)"
     },
     mist: {
         video: "https://assets.mixkit.co/videos/preview/mixkit-dense-fog-covering-forest-trees-34375-large.mp4",
         color: "#64748b",
         glow: "0 0 25px rgba(100, 116, 139, 0.2)",
-        icon: "<i class='bx bx-wind'></i>"
+        icon: "<i class='bx bx-wind'></i>",
+        overlayDay: "linear-gradient(180deg, rgba(210, 220, 235, 0.3) 0%, rgba(195, 205, 220, 0.2) 50%, rgba(210, 220, 235, 0.35) 100%)",
+        overlayNight: "linear-gradient(180deg, rgba(12, 15, 25, 0.35) 0%, rgba(15, 18, 30, 0.25) 40%, rgba(12, 15, 25, 0.4) 100%)"
     }
 };
 
@@ -213,15 +225,25 @@ async function fetchWeatherByCoords(lat, lon) {
 }
 
 // Coordinates state update dispatcher
-function handleAPIResponse(data) {
+function handleAPIResponse(data, isAutoRefresh = false) {
     currentWeatherData = data;
-    
-    // Save to search history array
-    addToRecentHistory(data.city);
 
-    // Reset manual overrides so it automatically syncs local time of new locations!
-    userThemeOverride = null;
-    localStorage.removeItem('themeOverride');
+    // Setup auto-refresh interval (every 10 minutes)
+    if (window.weatherRefreshInterval) {
+        clearInterval(window.weatherRefreshInterval);
+    }
+    window.weatherRefreshInterval = setInterval(() => {
+        fetchWeatherSilent(data.lat, data.lon);
+    }, 10 * 60 * 1000);
+    
+    if (!isAutoRefresh) {
+        // Save to search history array
+        addToRecentHistory(data.city);
+
+        // Reset manual overrides so it automatically syncs local time of new locations!
+        userThemeOverride = null;
+        localStorage.removeItem('themeOverride');
+    }
 
     // Clean autocomplete suggestions list
     document.getElementById('suggestions-box').style.display = 'none';
@@ -229,7 +251,9 @@ function handleAPIResponse(data) {
 
     // Auto determine day vs night mode for city timezone parameters
     const isDayTime = data.dt >= data.sunrise && data.dt < data.sunset;
-    setDayNightMode(isDayTime);
+    if (!userThemeOverride) {
+        setDayNightMode(isDayTime);
+    }
 
     // Update user interface text panels
     updateUI(data);
@@ -258,6 +282,18 @@ function dismissSkeletonLoader() {
         setTimeout(() => {
             loader.style.display = 'none';
         }, 600);
+    }
+}
+
+async function fetchWeatherSilent(lat, lon) {
+    try {
+        const response = await fetch(`/api/weather?lat=${lat}&lon=${lon}`);
+        const data = await response.json();
+        if (response.ok) {
+            handleAPIResponse(data, true);
+        }
+    } catch (err) {
+        console.error("Silent API auto-refresh failed:", err);
     }
 }
 
@@ -668,6 +704,22 @@ function setDayNightMode(isDay) {
         }
     }
 
+    // Update video opacity for immersive backgrounds
+    const video = document.getElementById('bg-video');
+    if (video) {
+        video.style.opacity = isDay ? 0.9 : 0.85;
+    }
+
+    // Update overlay tint for current weather type
+    const overlay = document.querySelector('.video-overlay');
+    if (overlay && currentWeatherData) {
+        const weatherType = getWeatherType(currentWeatherData.condition);
+        const conf = weatherConfigs[weatherType];
+        if (conf) {
+            overlay.style.background = isDay ? (conf.overlayDay || '') : (conf.overlayNight || '');
+        }
+    }
+
     const tileUrl = isDay 
         ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png' 
         : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
@@ -679,6 +731,17 @@ function setDayNightMode(isDay) {
     if (threeWeather) {
         threeWeather.setDayMode(isDay);
     }
+}
+
+// Helper to get weather type string from condition
+function getWeatherType(condition) {
+    const raw = condition.toLowerCase();
+    if (raw.includes('thunder') || raw.includes('storm')) return 'storm';
+    if (raw.includes('rain') || raw.includes('drizzle')) return 'rain';
+    if (raw.includes('snow') || raw.includes('ice')) return 'snow';
+    if (raw.includes('cloud') || raw.includes('overcast')) return 'clouds';
+    if (raw.includes('mist') || raw.includes('fog') || raw.includes('haze') || raw.includes('smoke')) return 'mist';
+    return 'clear';
 }
 
 // ==========================================
@@ -903,28 +966,72 @@ function startClock() {
 // ==========================================
 // VFX State Sync automatically
 // ==========================================
+
+// All valid weather body class names
+const weatherBodyClasses = ['weather-clear', 'weather-rain', 'weather-storm', 'weather-snow', 'weather-clouds', 'weather-mist'];
+
+// Apply the matching weather-* class to <body> for full CSS theme transformation
+function applyWeatherBodyClass(type) {
+    // Remove all previous weather classes
+    weatherBodyClasses.forEach(cls => document.body.classList.remove(cls));
+
+    // Map weather type to body class
+    const classMap = {
+        'clear': 'weather-clear',
+        'sunny': 'weather-clear',
+        'clouds': 'weather-clouds',
+        'cloudy': 'weather-clouds',
+        'overcast': 'weather-clouds',
+        'rain': 'weather-rain',
+        'rainy': 'weather-rain',
+        'drizzle': 'weather-rain',
+        'storm': 'weather-storm',
+        'thunderstorm': 'weather-storm',
+        'snow': 'weather-snow',
+        'snowy': 'weather-snow',
+        'mist': 'weather-mist',
+        'fog': 'weather-mist',
+        'haze': 'weather-mist',
+        'smoke': 'weather-mist'
+    };
+
+    const bodyClass = classMap[type.toLowerCase()] || 'weather-clear';
+    document.body.classList.add(bodyClass);
+}
+
 function triggerVFXState(type) {
     if (threeWeather) {
         threeWeather.changeWeather(type);
     }
 
+    // Apply the immersive weather body class for full UI theming
+    applyWeatherBodyClass(type);
+
     const video = document.getElementById('bg-video');
+    const overlay = document.querySelector('.video-overlay');
     if (video && weatherConfigs[type]) {
         const conf = weatherConfigs[type];
+        const isDay = document.body.classList.contains('day-mode');
         
-        video.style.opacity = 0.05;
+        // Fade out briefly during swap
+        video.style.opacity = 0.1;
         setTimeout(() => {
             video.src = conf.video;
             video.load();
             video.play().catch(e => console.log("Video auto play prevented", e));
             
-            const isDay = document.body.classList.contains('day-mode');
-            video.style.opacity = isDay ? 0.35 : 0.22;
-        }, 300);
+            // High opacity for immersive weather background
+            video.style.opacity = isDay ? 0.9 : 0.85;
+        }, 400);
 
-        const finalThemeColor = document.body.classList.contains('day-mode') ? adjustThemeColorForDay(conf.color) : conf.color;
+        // Update overlay tint based on weather + time
+        if (overlay) {
+            overlay.style.background = isDay ? (conf.overlayDay || '') : (conf.overlayNight || '');
+        }
+
+        const finalThemeColor = isDay ? adjustThemeColorForDay(conf.color) : conf.color;
         document.documentElement.style.setProperty('--theme-color', finalThemeColor);
-        document.documentElement.style.setProperty('--theme-glow', document.body.classList.contains('day-mode') ? `0 0 20px ${hexToRGBA(finalThemeColor, 0.12)}` : conf.glow);
+        document.documentElement.style.setProperty('--theme-glow', isDay ? `0 0 20px ${hexToRGBA(finalThemeColor, 0.12)}` : conf.glow);
     }
 }
 

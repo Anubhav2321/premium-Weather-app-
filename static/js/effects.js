@@ -133,6 +133,17 @@ class ThreeWeather {
         });
         this.customMeshes = [];
 
+        // Clean up any 3D lightning bolts from storm mode
+        if (this.stormLightningBolts) {
+            this.stormLightningBolts.forEach(bolt => {
+                this.scene.remove(bolt.mesh);
+                bolt.mesh.geometry.dispose();
+                bolt.mesh.material.dispose();
+            });
+            this.stormLightningBolts = [];
+        }
+        this.cameraRumble = 0;
+
         const isDay = document.body.classList.contains('day-mode');
         this.scene.fog = new THREE.FogExp2(isDay ? 0xeef2f6 : 0x070b19, 0.01);
         this.ambientLight.color.setHex(0xffffff);
@@ -271,6 +282,22 @@ class ThreeWeather {
         flareMesh.position.set(30, 20, -50);
         this.scene.add(flareMesh);
         this.customMeshes.push(flareMesh);
+
+        // Volumetric god-ray light cone
+        const coneGeo = new THREE.ConeGeometry(18, 60, 16, 1, true);
+        const coneMat = new THREE.MeshBasicMaterial({
+            color: isDay ? 0xfffbeb : 0xfef3c7,
+            transparent: true,
+            opacity: isDay ? 0.04 : 0.03,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        const godRay = new THREE.Mesh(coneGeo, coneMat);
+        godRay.position.set(30, -10, -50);
+        godRay.rotation.z = Math.PI * 0.05;
+        this.scene.add(godRay);
+        this.customMeshes.push(godRay);
     }
 
     createCloudsVFX() {
@@ -375,15 +402,17 @@ class ThreeWeather {
         const positions = [];
         const velocities = [];
 
-        for (let i = 0; i < 3000; i++) {
+        // Heavy rain — 4000 particles for dramatic downpour
+        const particleCount = 4000;
+        for (let i = 0; i < particleCount; i++) {
             positions.push(
-                (Math.random() - 0.5) * 100,
-                Math.random() * 80 - 40,
-                (Math.random() - 0.5) * 60
+                (Math.random() - 0.5) * 120,
+                Math.random() * 100 - 50,
+                (Math.random() - 0.5) * 80
             );
             velocities.push(
-                -0.4 - Math.random() * 0.3,
-                -1.2 - Math.random() * 0.9
+                -0.5 - Math.random() * 0.4,  // strong horizontal wind
+                -1.5 - Math.random() * 1.2     // very fast fall
             );
         }
 
@@ -392,9 +421,9 @@ class ThreeWeather {
 
         const material = new THREE.PointsMaterial({
             color: isDay ? 0x0369a1 : 0x93c5fd,
-            size: 0.5,
+            size: 0.55,
             transparent: true,
-            opacity: isDay ? 0.6 : 0.7,
+            opacity: isDay ? 0.6 : 0.75,
             map: this.dotTexture,
             blending: isDay ? THREE.NormalBlending : THREE.AdditiveBlending,
             depthWrite: false
@@ -403,6 +432,7 @@ class ThreeWeather {
         this.particles = new THREE.Points(geometry, material);
         this.scene.add(this.particles);
 
+        // Dark storm cloud shapes — dodecahedrons
         const stormGeo = new THREE.DodecahedronGeometry(12, 1);
         const stormMat = new THREE.MeshBasicMaterial({
             color: isDay ? 0x4b5563 : 0x0f172a,
@@ -411,15 +441,90 @@ class ThreeWeather {
             wireframe: true
         });
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 4; i++) {
             const darkCloud = new THREE.Mesh(stormGeo, stormMat);
             darkCloud.position.set(
-                (Math.random() - 0.5) * 60,
-                25,
-                -30 - Math.random() * 10
+                (Math.random() - 0.5) * 80,
+                22 + Math.random() * 10,
+                -30 - Math.random() * 15
             );
+            const s = Math.random() * 0.5 + 0.8;
+            darkCloud.scale.set(s * 2, s, s);
             this.scene.add(darkCloud);
             this.customMeshes.push(darkCloud);
+        }
+
+        // 3D Lightning bolt — procedural jagged line geometry
+        this.stormLightningBolts = [];
+        this.stormLightningTimer = 0;
+        this.cameraRumble = 0;
+
+        // Dark rotating vortex torus overhead
+        const vortexGeo = new THREE.TorusGeometry(25, 8, 8, 32);
+        const vortexMat = new THREE.MeshBasicMaterial({
+            color: isDay ? 0x64748b : 0x1e1b4b,
+            transparent: true,
+            opacity: isDay ? 0.06 : 0.1,
+            wireframe: true
+        });
+        const vortex = new THREE.Mesh(vortexGeo, vortexMat);
+        vortex.position.set(0, 35, -40);
+        vortex.rotation.x = Math.PI / 2.5;
+        this.scene.add(vortex);
+        this.customMeshes.push(vortex);
+    }
+
+    // Generate a procedural 3D lightning bolt
+    createLightningBolt() {
+        const points = [];
+        let x = (Math.random() - 0.5) * 60;
+        let y = 40;
+        let z = (Math.random() - 0.5) * 30 - 20;
+        
+        points.push(new THREE.Vector3(x, y, z));
+        
+        const segments = 8 + Math.floor(Math.random() * 6);
+        for (let i = 0; i < segments; i++) {
+            x += (Math.random() - 0.5) * 8;
+            y -= (Math.random() * 8 + 4);
+            z += (Math.random() - 0.5) * 4;
+            points.push(new THREE.Vector3(x, y, z));
+        }
+
+        const isDay = document.body.classList.contains('day-mode');
+        const boltGeo = new THREE.BufferGeometry().setFromPoints(points);
+        const boltMat = new THREE.LineBasicMaterial({
+            color: isDay ? 0x7c3aed : 0xe9d5ff,
+            transparent: true,
+            opacity: 1.0,
+            linewidth: 2
+        });
+
+        const bolt = new THREE.Line(boltGeo, boltMat);
+        this.scene.add(bolt);
+        this.stormLightningBolts.push({ mesh: bolt, life: 1.0 });
+
+        // Branch bolt (30% chance)
+        if (Math.random() < 0.3 && points.length > 3) {
+            const branchStart = points[Math.floor(points.length * 0.4)];
+            const branchPoints = [branchStart.clone()];
+            let bx = branchStart.x, by = branchStart.y, bz = branchStart.z;
+            for (let i = 0; i < 4; i++) {
+                bx += (Math.random() - 0.5) * 10;
+                by -= (Math.random() * 6 + 2);
+                bz += (Math.random() - 0.5) * 3;
+                branchPoints.push(new THREE.Vector3(bx, by, bz));
+            }
+            const branchGeo = new THREE.BufferGeometry().setFromPoints(branchPoints);
+            const branchMat = new THREE.LineBasicMaterial({
+                color: isDay ? 0xa78bfa : 0xc4b5fd,
+                transparent: true,
+                opacity: 0.7,
+                linewidth: 1
+            });
+            const branch = new THREE.Line(branchGeo, branchMat);
+            this.scene.add(branch);
+            this.stormLightningBolts.push({ mesh: branch, life: 0.8 });
         }
     }
 
@@ -513,8 +618,19 @@ class ThreeWeather {
         this.mouseY += (this.targetMouseY - this.mouseY) * 0.05;
 
         if (this.camera) {
-            this.camera.position.x = this.mouseX * 8;
-            this.camera.position.y = this.mouseY * 6;
+            let camX = this.mouseX * 8;
+            let camY = this.mouseY * 6;
+
+            // Camera rumble during storm lightning
+            if (this.cameraRumble && this.cameraRumble > 0) {
+                camX += (Math.random() - 0.5) * this.cameraRumble * 3;
+                camY += (Math.random() - 0.5) * this.cameraRumble * 2;
+                this.cameraRumble -= delta * 8;
+                if (this.cameraRumble < 0) this.cameraRumble = 0;
+            }
+
+            this.camera.position.x = camX;
+            this.camera.position.y = camY;
             this.camera.lookAt(this.scene.position);
         }
 
@@ -558,14 +674,29 @@ class ThreeWeather {
             else if (this.activeWeather === 'storm' || this.activeWeather === 'thunderstorm') {
                 this.handleLightning(delta);
 
+                // Update 3D lightning bolt lifetimes
+                if (this.stormLightningBolts && this.stormLightningBolts.length > 0) {
+                    for (let b = this.stormLightningBolts.length - 1; b >= 0; b--) {
+                        const bolt = this.stormLightningBolts[b];
+                        bolt.life -= delta * 6;
+                        bolt.mesh.material.opacity = Math.max(0, bolt.life);
+                        if (bolt.life <= 0) {
+                            this.scene.remove(bolt.mesh);
+                            bolt.mesh.geometry.dispose();
+                            bolt.mesh.material.dispose();
+                            this.stormLightningBolts.splice(b, 1);
+                        }
+                    }
+                }
+
                 for (let i = 0; i < length; i += 3) {
                     const idx = i / 3;
                     array[i] += vels[idx * 2];
                     array[i + 1] += vels[idx * 2 + 1];
 
-                    if (array[i + 1] < -35) {
-                        array[i + 1] = 40;
-                        array[i] = (Math.random() - 0.3) * 100;
+                    if (array[i + 1] < -45) {
+                        array[i + 1] = 50;
+                        array[i] = (Math.random() - 0.3) * 120;
                     }
                 }
             }
@@ -588,13 +719,25 @@ class ThreeWeather {
 
         this.customMeshes.forEach((mesh, index) => {
             if (this.activeWeather === 'clear' || this.activeWeather === 'sunny') {
-                if (index === 0) mesh.rotation.y += 0.001;
-                if (index === 1) mesh.rotation.x += 0.002;
+                if (index === 0) mesh.rotation.y += 0.001;      // wireframe globe
+                if (index === 1) mesh.rotation.x += 0.002;      // core glow
+                if (index === 2) {                                // god-ray cone
+                    mesh.rotation.z = Math.sin(elapsed * 0.3) * 0.08;
+                    mesh.material.opacity = 0.025 + Math.sin(elapsed * 0.5) * 0.015;
+                }
             } else if (this.activeWeather === 'clouds' || this.activeWeather === 'cloudy') {
                 mesh.position.x += 0.008;
                 if (mesh.position.x > 80) mesh.position.x = -80;
-            } else if (this.activeWeather === 'storm') {
-                mesh.rotation.y += 0.002;
+            } else if (this.activeWeather === 'storm' || this.activeWeather === 'thunderstorm') {
+                // Clouds drift and rotate, vortex (last mesh) spins faster
+                const isVortex = (index === this.customMeshes.length - 1);
+                if (isVortex) {
+                    mesh.rotation.z += 0.004;
+                    mesh.rotation.y += 0.001;
+                } else {
+                    mesh.rotation.y += 0.002;
+                    mesh.position.x += Math.sin(elapsed * 0.3 + index) * 0.02;
+                }
             }
         });
 
@@ -609,13 +752,13 @@ class ThreeWeather {
         const baseIntensity = isDay ? 0.95 : 0.3;
 
         if (this.lightningFlash > 0) {
-            this.lightningFlash -= delta * 15;
+            this.lightningFlash -= delta * 12;
             
             if (this.lightningFlash < 0) this.lightningFlash = 0;
 
-            const intensity = baseIntensity + this.lightningFlash * 1.8;
+            const intensity = baseIntensity + this.lightningFlash * 2.2;
             this.ambientLight.intensity = intensity;
-            this.directionalLight.intensity = intensity * 1.5;
+            this.directionalLight.intensity = intensity * 1.8;
 
             if (this.lightningFlash > 0.5) {
                 this.ambientLight.color.setHex(isDay ? 0xffffff : 0xb2ebf2);
@@ -625,7 +768,15 @@ class ThreeWeather {
         } else {
             if (Math.random() < this.lightningChance) {
                 this.lightningFlash = 1.0;
-                this.ambientLight.intensity = 2.0;
+                this.ambientLight.intensity = 2.5;
+
+                // Spawn 3D lightning bolt geometry
+                if (this.createLightningBolt) {
+                    this.createLightningBolt();
+                }
+
+                // Camera rumble on lightning strike
+                this.cameraRumble = 1.0;
 
                 if (window.triggerScreenShake) {
                     window.triggerScreenShake();

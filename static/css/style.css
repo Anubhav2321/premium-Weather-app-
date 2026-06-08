@@ -5,12 +5,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    --bg-dark: #070b19;
-    --bg-card: rgba(15, 23, 42, 0.45);
-    --border-color: rgba(255, 255, 255, 0.08);
-    --glass-blur: blur(25px);
+    --bg-dark: transparent;
+    --bg-card: rgba(10, 15, 30, 0.55);
+    --border-color: rgba(255, 255, 255, 0.12);
+    --glass-blur: blur(28px);
     --text-primary: #ffffff;
-    --text-secondary: #94a3b8;
+    --text-secondary: #c8d6e5;
     --theme-color: #38bdf8; /* Default Sky Blue */
     --theme-glow: 0 0 25px rgba(56, 189, 248, 0.25);
     
@@ -36,7 +36,7 @@
 }
 
 body {
-    background-color: var(--bg-dark);
+    background-color: #060a14;
     color: var(--text-primary);
     min-height: 100vh;
     overflow-x: hidden;
@@ -71,8 +71,8 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.22;
-    transition: opacity 1.5s ease;
+    opacity: 0.85;
+    transition: opacity 1.8s ease;
 }
 
 .video-overlay {
@@ -81,7 +81,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(7, 11, 25, 0.8) 0%, rgba(15, 23, 42, 0.5) 100%);
+    background: linear-gradient(180deg, rgba(5, 8, 18, 0.35) 0%, rgba(10, 15, 30, 0.25) 40%, rgba(5, 8, 18, 0.45) 100%);
+    transition: background 1s ease;
 }
 
 /* Moving fog lines (layered on top of video background) */
@@ -94,7 +95,7 @@ body {
     z-index: -2;
     background: transparent url('https://raw.githubusercontent.com/danielstuart14/CSS_FOG_ANIMATION/master/fog1.png') repeat-x;
     background-size: cover;
-    opacity: 0.08;
+    opacity: 0.12;
     animation: moveFog 70s linear infinite;
     pointer-events: none;
 }
@@ -109,9 +110,9 @@ body {
    ========================================================================== */
 .sidebar {
     width: 80px;
-    background: rgba(15, 23, 42, 0.35);
-    backdrop-filter: var(--glass-blur);
-    border-right: 1px solid var(--border-color);
+    background: rgba(5, 10, 20, 0.5);
+    backdrop-filter: blur(40px) saturate(1.3);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -237,13 +238,13 @@ body {
 }
 
 .location-pill {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: var(--glass-blur);
+    background: rgba(5, 10, 20, 0.45);
+    backdrop-filter: blur(20px);
     padding: 8px 18px;
     border-radius: 30px;
     font-size: 13px;
     font-weight: 500;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -269,21 +270,21 @@ body {
 }
 
 .search-box {
-    background: rgba(15, 23, 42, 0.4);
-    backdrop-filter: var(--glass-blur);
+    background: rgba(5, 10, 20, 0.5);
+    backdrop-filter: blur(30px) saturate(1.2);
     padding: 12px 20px;
     border-radius: 30px;
     display: flex;
     align-items: center;
     gap: 12px;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-box:focus-within {
     border-color: var(--theme-color);
     box-shadow: var(--theme-glow);
-    background: rgba(15, 23, 42, 0.6);
+    background: rgba(5, 10, 20, 0.7);
 }
 
 .search-box input {
@@ -350,14 +351,14 @@ body {
     top: 55px;
     left: 0;
     width: 100%;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--border-color);
+    background: rgba(5, 10, 20, 0.92);
+    backdrop-filter: blur(30px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     z-index: 100;
     overflow: hidden;
     display: none;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
 .suggestion-item {
@@ -409,16 +410,16 @@ body {
 }
 
 .hero-weather-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
-    backdrop-filter: var(--glass-blur);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(135deg, rgba(10, 15, 30, 0.55) 0%, rgba(15, 23, 42, 0.35) 100%);
+    backdrop-filter: blur(35px) saturate(1.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 32px;
     padding: 40px 30px;
     position: relative;
     transform-style: preserve-3d;
     transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
     transition: transform 0.1s ease, box-shadow 0.3s;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), var(--theme-glow);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), var(--theme-glow);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -537,9 +538,9 @@ body {
    Simulated Control Sidebar (Manual Visual Controls)
    ========================================================================== */
 .simulator-panel {
-    background: var(--bg-card);
-    backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--border-color);
+    background: rgba(10, 15, 30, 0.5);
+    backdrop-filter: blur(30px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
     padding: 22px;
     display: flex;
@@ -639,9 +640,9 @@ body {
 }
 
 .detail-card {
-    background: var(--bg-card);
-    backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--border-color);
+    background: rgba(10, 15, 30, 0.5);
+    backdrop-filter: blur(30px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
     padding: 24px;
     display: flex;
@@ -667,8 +668,8 @@ body {
 
 .detail-card:hover {
     transform: translateY(-5px);
-    background: rgba(15, 23, 42, 0.6);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(10, 15, 30, 0.65);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .detail-card:hover::after {
@@ -738,9 +739,9 @@ body {
    Chart Panel (Forecast Trend Visual)
    ========================================================================== */
 .chart-panel {
-    background: var(--bg-card);
-    backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--border-color);
+    background: rgba(10, 15, 30, 0.55);
+    backdrop-filter: blur(30px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
     padding: 24px;
     flex: 1;
@@ -778,9 +779,9 @@ body {
    Map Panel (Leaflet Location Tracker)
    ========================================================================== */
 .map-panel {
-    background: var(--bg-card);
-    backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--border-color);
+    background: rgba(10, 15, 30, 0.55);
+    backdrop-filter: blur(30px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
     padding: 24px;
     height: 350px;
@@ -914,9 +915,9 @@ body {
    Forecast Panel & Overview (8-Day Daily Forecast)
    ========================================================================== */
 .forecast-panel {
-    background: var(--bg-card);
-    backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--border-color);
+    background: rgba(10, 15, 30, 0.55);
+    backdrop-filter: blur(30px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
     padding: 24px;
     display: flex;
@@ -967,8 +968,9 @@ body {
 
 /* 8-Day Cards styling with floating micro-animations */
 .forecast-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border-color);
+    background: rgba(10, 15, 30, 0.45);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 18px;
     padding: 18px 10px;
     display: flex;
@@ -990,6 +992,7 @@ body {
 
 .day-mode .forecast-card {
     background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(20px);
 }
 
 .day-mode .forecast-card:hover {
@@ -1104,9 +1107,9 @@ body {
 }
 
 .day-mode {
-    --bg-dark: #eef2f6;
-    --bg-card: rgba(255, 255, 255, 0.55);
-    --border-color: rgba(15, 23, 42, 0.07);
+    --bg-dark: transparent;
+    --bg-card: rgba(255, 255, 255, 0.45);
+    --border-color: rgba(15, 23, 42, 0.1);
     --text-primary: #0f172a;
     --text-secondary: #475569;
     --theme-color: #0284c7;
@@ -1114,16 +1117,17 @@ body {
 }
 
 .day-mode .video-background video {
-    opacity: 0.35;
+    opacity: 0.9;
 }
 
 .day-mode .video-overlay {
-    background: linear-gradient(135deg, rgba(238, 242, 246, 0.75) 0%, rgba(224, 242, 254, 0.55) 100%);
+    background: linear-gradient(180deg, rgba(240, 245, 255, 0.35) 0%, rgba(255, 255, 255, 0.2) 40%, rgba(240, 245, 255, 0.4) 100%);
 }
 
 .day-mode .sidebar {
-    background: rgba(255, 255, 255, 0.45);
-    border-right: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(40px) saturate(1.3);
+    border-right: 1px solid rgba(15, 23, 42, 0.08);
 }
 
 .day-mode .sidebar-link:hover, .day-mode .sidebar-link.active {
@@ -1154,12 +1158,13 @@ body {
 }
 
 .day-mode .search-box {
-    background: rgba(255, 255, 255, 0.65);
-    border-color: var(--border-color);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(30px) saturate(1.2);
+    border-color: rgba(15, 23, 42, 0.08);
 }
 
 .day-mode .search-box:focus-within {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.7);
     border-color: var(--theme-color);
     box-shadow: var(--theme-glow);
 }
@@ -1198,9 +1203,10 @@ body {
 }
 
 .day-mode .hero-weather-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.35) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08), var(--theme-glow);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.25) 100%);
+    backdrop-filter: blur(35px) saturate(1.3);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12), var(--theme-glow);
 }
 
 .day-mode .hero-weather-card::before {
@@ -1228,16 +1234,18 @@ body {
 }
 
 .day-mode .detail-card {
-    background: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(30px) saturate(1.2);
 }
 
 .day-mode .detail-card:hover {
-    background: rgba(255, 255, 255, 0.75);
-    border-color: rgba(15, 23, 42, 0.12);
+    background: rgba(255, 255, 255, 0.55);
+    border-color: rgba(15, 23, 42, 0.15);
 }
 
 .day-mode .simulator-panel, .day-mode .chart-panel, .day-mode .map-panel {
-    background: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(30px) saturate(1.2);
 }
 
 .day-mode #weather-map {
@@ -1269,7 +1277,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #070b19;
+    background: #060a14;
     display: flex;
     z-index: 9999;
     pointer-events: all;
@@ -1441,13 +1449,13 @@ body {
     top: 55px;
     left: 0;
     width: 100%;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--border-color);
+    background: rgba(5, 10, 20, 0.92);
+    backdrop-filter: blur(30px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     z-index: 99;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
 .recent-header {
@@ -1475,13 +1483,726 @@ body {
 /* Glass card backlight glows on hover */
 .detail-card:hover {
     transform: translateY(-5px);
-    background: rgba(15, 23, 42, 0.55);
+    background: rgba(10, 15, 30, 0.65);
     border-color: var(--theme-color);
     box-shadow: var(--theme-glow);
 }
 
 .day-mode .detail-card:hover {
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.55);
     border-color: var(--theme-color);
     box-shadow: var(--theme-glow);
+}
+
+/* ==========================================================================
+   WEATHER-ADAPTIVE IMMERSIVE UI THEMING
+   Dynamically applied body classes that transform the entire dashboard
+   based on real-time weather conditions.
+   ========================================================================== */
+
+/* Smooth transition for all weather theme changes */
+body, .dashboard, .detail-card, .hero-weather-card, .chart-panel,
+.map-panel, .forecast-panel, .forecast-card, .sidebar, .location-pill,
+.search-box, .feels-like-pill, .simulator-panel {
+    transition: background 0.8s ease, border-color 0.8s ease,
+                box-shadow 0.8s ease, color 0.5s ease;
+}
+
+/* --------------------------------------------------------------------------
+   WEATHER: CLEAR / SUNNY — Warm amber golden radiance
+   -------------------------------------------------------------------------- */
+body.weather-clear {
+    --theme-color: #f59e0b;
+    --theme-glow: 0 0 30px rgba(245, 158, 11, 0.35);
+}
+
+body.weather-clear .hero-weather-card {
+    border-color: rgba(245, 158, 11, 0.2);
+    box-shadow: 0 20px 60px rgba(245, 158, 11, 0.12), 0 0 40px rgba(245, 158, 11, 0.08);
+}
+
+body.weather-clear .detail-card {
+    border-color: rgba(245, 158, 11, 0.1);
+}
+
+body.weather-clear .detail-card:hover {
+    border-color: rgba(245, 158, 11, 0.3);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15), var(--theme-glow);
+}
+
+/* Sun rays ambient animation behind the dashboard */
+body.weather-clear .dashboard::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    right: -20%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(ellipse at center,
+        rgba(245, 158, 11, 0.06) 0%,
+        rgba(245, 158, 11, 0.03) 30%,
+        transparent 70%);
+    border-radius: 50%;
+    animation: sunPulse 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.weather-clear .dashboard::after {
+    content: '';
+    position: fixed;
+    top: 10%;
+    right: 5%;
+    width: 400px;
+    height: 400px;
+    background: conic-gradient(from 0deg,
+        transparent 0deg,
+        rgba(255, 200, 50, 0.04) 30deg,
+        transparent 60deg,
+        rgba(255, 200, 50, 0.03) 120deg,
+        transparent 150deg,
+        rgba(255, 200, 50, 0.04) 210deg,
+        transparent 240deg,
+        rgba(255, 200, 50, 0.03) 300deg,
+        transparent 330deg);
+    border-radius: 50%;
+    animation: sunRaysRotate 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes sunPulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.15); opacity: 1; }
+}
+
+@keyframes sunRaysRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+body.weather-clear .forecast-card:hover {
+    border-color: rgba(245, 158, 11, 0.3);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+}
+
+body.weather-clear .card-icon {
+    background: rgba(245, 158, 11, 0.12);
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.15);
+}
+
+body.weather-clear .brand-icon {
+    animation: sunnyBrandPulse 3s infinite ease-in-out;
+}
+
+@keyframes sunnyBrandPulse {
+    0%, 100% { filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.5)); color: #f59e0b; }
+    50% { filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.9)); color: #fbbf24; }
+}
+
+/* --------------------------------------------------------------------------
+   WEATHER: RAIN — Cool cyan-blue water immersion
+   -------------------------------------------------------------------------- */
+body.weather-rain {
+    --theme-color: #0ea5e9;
+    --theme-glow: 0 0 30px rgba(14, 165, 233, 0.35);
+}
+
+body.weather-rain .hero-weather-card {
+    border-color: rgba(14, 165, 233, 0.15);
+    box-shadow: 0 20px 60px rgba(14, 165, 233, 0.1), 0 0 40px rgba(14, 165, 233, 0.06);
+}
+
+body.weather-rain .detail-card {
+    border-color: rgba(14, 165, 233, 0.08);
+}
+
+body.weather-rain .detail-card:hover {
+    border-color: rgba(14, 165, 233, 0.25);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.12), var(--theme-glow);
+}
+
+/* Rain streaks overlay across the entire page */
+body.weather-rain .dashboard::before {
+    content: '';
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 300%;
+    background-image:
+        linear-gradient(180deg, transparent 0%, rgba(14, 165, 233, 0.06) 50%, transparent 100%),
+        repeating-linear-gradient(90deg,
+            transparent 0px,
+            transparent 40px,
+            rgba(14, 165, 233, 0.03) 40px,
+            rgba(14, 165, 233, 0.03) 41px
+        );
+    animation: rainStreaks 1.2s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.weather-rain .dashboard::after {
+    content: '';
+    position: fixed;
+    top: -100%;
+    left: 15%;
+    width: 100%;
+    height: 300%;
+    background-image:
+        repeating-linear-gradient(175deg,
+            transparent 0px,
+            transparent 60px,
+            rgba(56, 189, 248, 0.04) 60px,
+            rgba(56, 189, 248, 0.04) 61px
+        );
+    animation: rainStreaks 0.9s linear infinite;
+    animation-delay: -0.3s;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes rainStreaks {
+    0% { transform: translateY(-33.33%); }
+    100% { transform: translateY(0%); }
+}
+
+/* Water drip effect on cards */
+body.weather-rain .hero-weather-card::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 20%;
+    width: 60%;
+    height: 4px;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(14, 165, 233, 0.3),
+        rgba(56, 189, 248, 0.5),
+        rgba(14, 165, 233, 0.3),
+        transparent);
+    border-radius: 0 0 20px 20px;
+    animation: waterGlisten 2.5s ease-in-out infinite;
+}
+
+@keyframes waterGlisten {
+    0%, 100% { opacity: 0.3; transform: scaleX(0.8); }
+    50% { opacity: 1; transform: scaleX(1.1); }
+}
+
+body.weather-rain .card-icon {
+    background: rgba(14, 165, 233, 0.12);
+    box-shadow: 0 0 12px rgba(14, 165, 233, 0.15);
+}
+
+body.weather-rain .forecast-card:hover {
+    border-color: rgba(14, 165, 233, 0.3);
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   WEATHER: STORM — Dark electric purple chaos
+   -------------------------------------------------------------------------- */
+body.weather-storm {
+    --theme-color: #a855f7;
+    --theme-glow: 0 0 35px rgba(168, 85, 247, 0.4);
+}
+
+body.weather-storm .hero-weather-card {
+    border-color: rgba(168, 85, 247, 0.2);
+    box-shadow: 0 20px 60px rgba(168, 85, 247, 0.15), 0 0 50px rgba(168, 85, 247, 0.08);
+    animation: stormCardPulse 3s ease-in-out infinite;
+}
+
+@keyframes stormCardPulse {
+    0%, 100% { box-shadow: 0 20px 60px rgba(168, 85, 247, 0.1), 0 0 30px rgba(168, 85, 247, 0.05); }
+    50% { box-shadow: 0 20px 70px rgba(168, 85, 247, 0.2), 0 0 60px rgba(168, 85, 247, 0.12); }
+}
+
+body.weather-storm .detail-card {
+    border-color: rgba(168, 85, 247, 0.1);
+}
+
+body.weather-storm .detail-card:hover {
+    border-color: rgba(168, 85, 247, 0.35);
+    box-shadow: 0 8px 30px rgba(168, 85, 247, 0.2), var(--theme-glow);
+}
+
+/* Lightning flash overlay */
+body.weather-storm .dashboard::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 30% 20%,
+        rgba(168, 85, 247, 0.08) 0%,
+        transparent 50%);
+    animation: lightningFlashCSS 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Storm rain overlay — heavier angle */
+body.weather-storm .dashboard::after {
+    content: '';
+    position: fixed;
+    top: -100%;
+    left: -20%;
+    width: 140%;
+    height: 300%;
+    background-image:
+        repeating-linear-gradient(165deg,
+            transparent 0px,
+            transparent 25px,
+            rgba(168, 85, 247, 0.03) 25px,
+            rgba(168, 85, 247, 0.03) 26px
+        ),
+        repeating-linear-gradient(170deg,
+            transparent 0px,
+            transparent 35px,
+            rgba(147, 197, 253, 0.03) 35px,
+            rgba(147, 197, 253, 0.03) 36px
+        );
+    animation: stormRainStreaks 0.6s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes lightningFlashCSS {
+    0%, 100% { opacity: 0; }
+    4% { opacity: 1; }
+    6% { opacity: 0; }
+    8% { opacity: 0.7; }
+    9% { opacity: 0; }
+    50% { opacity: 0; }
+    52% { opacity: 0.5; }
+    53% { opacity: 0; }
+}
+
+@keyframes stormRainStreaks {
+    0% { transform: translateY(-33.33%) translateX(5%); }
+    100% { transform: translateY(0%) translateX(-2%); }
+}
+
+body.weather-storm .card-icon {
+    background: rgba(168, 85, 247, 0.12);
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.2);
+}
+
+body.weather-storm .forecast-card:hover {
+    border-color: rgba(168, 85, 247, 0.35);
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.2);
+}
+
+body.weather-storm .brand-icon {
+    animation: stormBrandFlicker 4s infinite;
+}
+
+@keyframes stormBrandFlicker {
+    0%, 100% { filter: drop-shadow(0 0 3px rgba(168, 85, 247, 0.4)); color: #a855f7; }
+    15% { filter: drop-shadow(0 0 20px rgba(168, 85, 247, 1)); color: #e9d5ff; }
+    17% { filter: drop-shadow(0 0 3px rgba(168, 85, 247, 0.3)); color: #a855f7; }
+    19% { filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.9)); color: #d8b4fe; }
+    21% { filter: drop-shadow(0 0 3px rgba(168, 85, 247, 0.4)); color: #a855f7; }
+    60% { filter: drop-shadow(0 0 5px rgba(168, 85, 247, 0.5)); }
+}
+
+/* Electric border effect on storm cards */
+body.weather-storm .detail-card::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 24px;
+    background: linear-gradient(135deg,
+        rgba(168, 85, 247, 0.15),
+        transparent 40%,
+        transparent 60%,
+        rgba(147, 197, 253, 0.1));
+    z-index: -1;
+    animation: electricBorder 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes electricBorder {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+}
+
+/* --------------------------------------------------------------------------
+   WEATHER: SNOW — Icy crystalline frost
+   -------------------------------------------------------------------------- */
+body.weather-snow {
+    --theme-color: #60a5fa;
+    --theme-glow: 0 0 30px rgba(96, 165, 250, 0.3);
+}
+
+body.weather-snow .hero-weather-card {
+    border-color: rgba(96, 165, 250, 0.15);
+    box-shadow: 0 20px 60px rgba(96, 165, 250, 0.08), 0 0 40px rgba(147, 197, 253, 0.06);
+}
+
+body.weather-snow .detail-card {
+    border-color: rgba(147, 197, 253, 0.1);
+    backdrop-filter: blur(30px);
+}
+
+body.weather-snow .detail-card:hover {
+    border-color: rgba(147, 197, 253, 0.3);
+    box-shadow: 0 8px 25px rgba(147, 197, 253, 0.12), var(--theme-glow);
+}
+
+/* Snowflake drift overlay */
+body.weather-snow .dashboard::before {
+    content: '';
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 300%;
+    background-image:
+        radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.5) 50%, transparent 100%),
+        radial-gradient(2px 2px at 40% 70%, rgba(255, 255, 255, 0.4) 50%, transparent 100%),
+        radial-gradient(3px 3px at 60% 20%, rgba(255, 255, 255, 0.5) 50%, transparent 100%),
+        radial-gradient(2px 2px at 80% 50%, rgba(255, 255, 255, 0.3) 50%, transparent 100%),
+        radial-gradient(2px 2px at 10% 60%, rgba(255, 255, 255, 0.4) 50%, transparent 100%),
+        radial-gradient(3px 3px at 50% 40%, rgba(255, 255, 255, 0.3) 50%, transparent 100%),
+        radial-gradient(2px 2px at 70% 80%, rgba(255, 255, 255, 0.5) 50%, transparent 100%),
+        radial-gradient(2px 2px at 30% 90%, rgba(255, 255, 255, 0.4) 50%, transparent 100%),
+        radial-gradient(3px 3px at 90% 10%, rgba(255, 255, 255, 0.3) 50%, transparent 100%),
+        radial-gradient(2px 2px at 15% 45%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+    background-size: 100% 33.33%;
+    animation: snowfallDrift 8s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.weather-snow .dashboard::after {
+    content: '';
+    position: fixed;
+    top: -100%;
+    left: 10%;
+    width: 100%;
+    height: 300%;
+    background-image:
+        radial-gradient(3px 3px at 25% 25%, rgba(200, 220, 255, 0.4) 50%, transparent 100%),
+        radial-gradient(2px 2px at 55% 55%, rgba(200, 220, 255, 0.3) 50%, transparent 100%),
+        radial-gradient(3px 3px at 75% 15%, rgba(200, 220, 255, 0.4) 50%, transparent 100%),
+        radial-gradient(2px 2px at 35% 85%, rgba(200, 220, 255, 0.3) 50%, transparent 100%),
+        radial-gradient(2px 2px at 85% 65%, rgba(200, 220, 255, 0.4) 50%, transparent 100%),
+        radial-gradient(3px 3px at 45% 35%, rgba(200, 220, 255, 0.3) 50%, transparent 100%);
+    background-size: 100% 33.33%;
+    animation: snowfallDrift 12s linear infinite;
+    animation-delay: -3s;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes snowfallDrift {
+    0% { transform: translateY(-33.33%) translateX(0); }
+    50% { transform: translateY(-16.66%) translateX(15px); }
+    100% { transform: translateY(0%) translateX(0); }
+}
+
+/* Frosted glass shimmer on hero card */
+body.weather-snow .hero-weather-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.04),
+        rgba(200, 220, 255, 0.06),
+        transparent);
+    animation: frostShimmer 6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes frostShimmer {
+    0% { left: -60%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
+}
+
+body.weather-snow .card-icon {
+    background: rgba(96, 165, 250, 0.12);
+    box-shadow: 0 0 12px rgba(147, 197, 253, 0.15);
+}
+
+body.weather-snow .forecast-card:hover {
+    border-color: rgba(147, 197, 253, 0.3);
+    box-shadow: 0 0 20px rgba(147, 197, 253, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   WEATHER: CLOUDS — Muted drifting atmosphere
+   -------------------------------------------------------------------------- */
+body.weather-clouds {
+    --theme-color: #64748b;
+    --theme-glow: 0 0 25px rgba(100, 116, 139, 0.25);
+}
+
+body.weather-clouds .hero-weather-card {
+    border-color: rgba(100, 116, 139, 0.12);
+    box-shadow: 0 20px 50px rgba(100, 116, 139, 0.08);
+}
+
+body.weather-clouds .detail-card {
+    border-color: rgba(100, 116, 139, 0.08);
+}
+
+body.weather-clouds .detail-card:hover {
+    border-color: rgba(100, 116, 139, 0.2);
+    box-shadow: 0 8px 25px rgba(100, 116, 139, 0.1), var(--theme-glow);
+}
+
+/* Drifting fog wisps */
+body.weather-clouds .dashboard::before {
+    content: '';
+    position: fixed;
+    top: 20%;
+    left: -30%;
+    width: 160%;
+    height: 200px;
+    background: radial-gradient(ellipse at center,
+        rgba(148, 163, 184, 0.06) 0%,
+        rgba(148, 163, 184, 0.02) 40%,
+        transparent 70%);
+    filter: blur(40px);
+    animation: cloudDrift 25s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.weather-clouds .dashboard::after {
+    content: '';
+    position: fixed;
+    top: 55%;
+    left: -20%;
+    width: 140%;
+    height: 150px;
+    background: radial-gradient(ellipse at center,
+        rgba(148, 163, 184, 0.05) 0%,
+        rgba(148, 163, 184, 0.02) 40%,
+        transparent 70%);
+    filter: blur(35px);
+    animation: cloudDrift 18s ease-in-out infinite reverse;
+    animation-delay: -5s;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes cloudDrift {
+    0%, 100% { transform: translateX(0); opacity: 0.5; }
+    50% { transform: translateX(15%); opacity: 1; }
+}
+
+body.weather-clouds .card-icon {
+    background: rgba(100, 116, 139, 0.12);
+    box-shadow: 0 0 10px rgba(100, 116, 139, 0.1);
+}
+
+body.weather-clouds .forecast-card:hover {
+    border-color: rgba(100, 116, 139, 0.25);
+    box-shadow: 0 0 18px rgba(100, 116, 139, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   WEATHER: MIST / FOG — Dense ethereal haze
+   -------------------------------------------------------------------------- */
+body.weather-mist {
+    --theme-color: #94a3b8;
+    --theme-glow: 0 0 25px rgba(148, 163, 184, 0.2);
+}
+
+body.weather-mist .hero-weather-card {
+    border-color: rgba(148, 163, 184, 0.1);
+    box-shadow: 0 20px 50px rgba(148, 163, 184, 0.06);
+    backdrop-filter: blur(35px);
+}
+
+body.weather-mist .detail-card {
+    border-color: rgba(148, 163, 184, 0.06);
+    backdrop-filter: blur(35px);
+}
+
+body.weather-mist .detail-card:hover {
+    border-color: rgba(148, 163, 184, 0.2);
+    box-shadow: 0 8px 20px rgba(148, 163, 184, 0.08), var(--theme-glow);
+}
+
+/* Dense rolling fog */
+body.weather-mist .dashboard::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+    background:
+        radial-gradient(ellipse at 20% 40%, rgba(148, 163, 184, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 60%, rgba(148, 163, 184, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 30%, rgba(226, 232, 240, 0.05) 0%, transparent 40%);
+    filter: blur(60px);
+    animation: fogRoll 30s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.weather-mist .dashboard::after {
+    content: '';
+    position: fixed;
+    top: 30%;
+    left: -30%;
+    width: 160%;
+    height: 40%;
+    background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(148, 163, 184, 0.04) 30%,
+        rgba(148, 163, 184, 0.06) 50%,
+        rgba(148, 163, 184, 0.04) 70%,
+        transparent 100%);
+    filter: blur(50px);
+    animation: fogRoll 20s ease-in-out infinite reverse;
+    animation-delay: -8s;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes fogRoll {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(20%); }
+}
+
+body.weather-mist .card-icon {
+    background: rgba(148, 163, 184, 0.1);
+    box-shadow: 0 0 10px rgba(148, 163, 184, 0.08);
+}
+
+body.weather-mist .forecast-card:hover {
+    border-color: rgba(148, 163, 184, 0.2);
+    box-shadow: 0 0 15px rgba(148, 163, 184, 0.1);
+}
+
+/* ==========================================================================
+   DAY-MODE + WEATHER THEME OVERRIDES
+   Ensures weather themes look correct when day-mode is also active
+   ========================================================================== */
+body.day-mode.weather-clear {
+    --theme-color: #d97706;
+    --theme-glow: 0 0 25px rgba(217, 119, 6, 0.15);
+    --bg-card: rgba(255, 248, 235, 0.55);
+}
+
+body.day-mode.weather-clear .dashboard::before {
+    background: radial-gradient(ellipse at center,
+        rgba(245, 158, 11, 0.1) 0%,
+        rgba(245, 158, 11, 0.04) 30%,
+        transparent 70%);
+}
+
+body.day-mode.weather-clear .hero-weather-card {
+    background: linear-gradient(135deg, rgba(255, 248, 235, 0.75) 0%, rgba(255, 237, 213, 0.45) 100%);
+    border-color: rgba(245, 158, 11, 0.15);
+}
+
+body.day-mode.weather-clear .detail-card {
+    background: rgba(255, 248, 235, 0.6);
+}
+
+body.day-mode.weather-rain {
+    --theme-color: #0369a1;
+    --theme-glow: 0 0 25px rgba(3, 105, 161, 0.15);
+    --bg-card: rgba(240, 249, 255, 0.55);
+}
+
+body.day-mode.weather-rain .hero-weather-card {
+    background: linear-gradient(135deg, rgba(240, 249, 255, 0.75) 0%, rgba(224, 242, 254, 0.45) 100%);
+    border-color: rgba(3, 105, 161, 0.12);
+}
+
+body.day-mode.weather-rain .detail-card {
+    background: rgba(240, 249, 255, 0.6);
+}
+
+body.day-mode.weather-storm {
+    --theme-color: #7c3aed;
+    --theme-glow: 0 0 25px rgba(124, 58, 237, 0.15);
+    --bg-card: rgba(245, 243, 255, 0.55);
+}
+
+body.day-mode.weather-storm .hero-weather-card {
+    background: linear-gradient(135deg, rgba(245, 243, 255, 0.75) 0%, rgba(237, 233, 254, 0.45) 100%);
+    border-color: rgba(124, 58, 237, 0.12);
+}
+
+body.day-mode.weather-storm .detail-card {
+    background: rgba(245, 243, 255, 0.6);
+}
+
+body.day-mode.weather-snow {
+    --theme-color: #2563eb;
+    --theme-glow: 0 0 25px rgba(37, 99, 235, 0.12);
+    --bg-card: rgba(239, 246, 255, 0.6);
+}
+
+body.day-mode.weather-snow .hero-weather-card {
+    background: linear-gradient(135deg, rgba(239, 246, 255, 0.8) 0%, rgba(219, 234, 254, 0.5) 100%);
+    border-color: rgba(37, 99, 235, 0.1);
+}
+
+body.day-mode.weather-snow .detail-card {
+    background: rgba(239, 246, 255, 0.65);
+}
+
+body.day-mode.weather-snow .dashboard::before {
+    background-image:
+        radial-gradient(2px 2px at 20% 30%, rgba(37, 99, 235, 0.25) 50%, transparent 100%),
+        radial-gradient(2px 2px at 40% 70%, rgba(37, 99, 235, 0.2) 50%, transparent 100%),
+        radial-gradient(3px 3px at 60% 20%, rgba(37, 99, 235, 0.25) 50%, transparent 100%),
+        radial-gradient(2px 2px at 80% 50%, rgba(37, 99, 235, 0.15) 50%, transparent 100%),
+        radial-gradient(2px 2px at 10% 60%, rgba(37, 99, 235, 0.2) 50%, transparent 100%),
+        radial-gradient(3px 3px at 50% 40%, rgba(37, 99, 235, 0.15) 50%, transparent 100%),
+        radial-gradient(2px 2px at 70% 80%, rgba(37, 99, 235, 0.25) 50%, transparent 100%),
+        radial-gradient(2px 2px at 30% 90%, rgba(37, 99, 235, 0.2) 50%, transparent 100%),
+        radial-gradient(3px 3px at 90% 10%, rgba(37, 99, 235, 0.15) 50%, transparent 100%),
+        radial-gradient(2px 2px at 15% 45%, rgba(37, 99, 235, 0.25) 50%, transparent 100%);
+}
+
+body.day-mode.weather-clouds {
+    --theme-color: #475569;
+    --theme-glow: 0 0 20px rgba(71, 85, 105, 0.12);
+    --bg-card: rgba(248, 250, 252, 0.6);
+}
+
+body.day-mode.weather-clouds .hero-weather-card {
+    background: linear-gradient(135deg, rgba(248, 250, 252, 0.8) 0%, rgba(241, 245, 249, 0.5) 100%);
+}
+
+body.day-mode.weather-clouds .detail-card {
+    background: rgba(248, 250, 252, 0.65);
+}
+
+body.day-mode.weather-mist {
+    --theme-color: #64748b;
+    --theme-glow: 0 0 20px rgba(100, 116, 139, 0.1);
+    --bg-card: rgba(248, 250, 252, 0.5);
+}
+
+body.day-mode.weather-mist .hero-weather-card {
+    background: linear-gradient(135deg, rgba(248, 250, 252, 0.7) 0%, rgba(241, 245, 249, 0.4) 100%);
+    backdrop-filter: blur(40px);
+}
+
+body.day-mode.weather-mist .detail-card {
+    background: rgba(248, 250, 252, 0.5);
+    backdrop-filter: blur(40px);
 }
