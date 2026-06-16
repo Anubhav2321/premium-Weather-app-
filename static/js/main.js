@@ -29,50 +29,83 @@ const weatherConfigs = {
         color: "#0284c7",
         glow: "0 0 25px rgba(2, 132, 199, 0.3)",
         icon: "<i class='bx bx-sun'></i>",
-        overlayDay: "linear-gradient(180deg, rgba(135, 206, 250, 0.15) 0%, rgba(255, 248, 220, 0.1) 50%, rgba(135, 206, 250, 0.2) 100%)",
-        overlayNight: "linear-gradient(180deg, rgba(5, 10, 30, 0.3) 0%, rgba(10, 15, 35, 0.2) 40%, rgba(5, 10, 30, 0.35) 100%)"
+        overlayDay: "linear-gradient(180deg, rgba(135, 206, 250, 0.08) 0%, rgba(255, 248, 220, 0.05) 50%, rgba(135, 206, 250, 0.1) 100%)",
+        overlayNight: "linear-gradient(180deg, rgba(5, 10, 30, 0.2) 0%, rgba(10, 15, 35, 0.15) 40%, rgba(5, 10, 30, 0.25) 100%)"
     },
     clouds: {
         video: "https://assets.mixkit.co/videos/preview/mixkit-dark-clouds-drifting-across-the-sky-34676-large.mp4",
         color: "#64748b",
         glow: "0 0 25px rgba(100, 116, 139, 0.2)",
         icon: "<i class='bx bx-cloud'></i>",
-        overlayDay: "linear-gradient(180deg, rgba(200, 210, 225, 0.25) 0%, rgba(180, 195, 215, 0.15) 50%, rgba(200, 210, 225, 0.3) 100%)",
-        overlayNight: "linear-gradient(180deg, rgba(10, 15, 30, 0.35) 0%, rgba(15, 20, 35, 0.25) 40%, rgba(10, 15, 30, 0.4) 100%)"
+        overlayDay: "linear-gradient(180deg, rgba(200, 210, 225, 0.12) 0%, rgba(180, 195, 215, 0.08) 50%, rgba(200, 210, 225, 0.15) 100%)",
+        overlayNight: "linear-gradient(180deg, rgba(10, 15, 30, 0.25) 0%, rgba(15, 20, 35, 0.15) 40%, rgba(10, 15, 30, 0.3) 100%)"
     },
     rain: {
         video: "https://assets.mixkit.co/videos/preview/mixkit-rain-falling-on-a-window-pane-14186-large.mp4",
         color: "#0ea5e9",
         glow: "0 0 25px rgba(14, 165, 233, 0.35)",
         icon: "<i class='bx bx-cloud-rain'></i>",
-        overlayDay: "linear-gradient(180deg, rgba(100, 150, 200, 0.2) 0%, rgba(80, 130, 180, 0.15) 50%, rgba(100, 150, 200, 0.25) 100%)",
-        overlayNight: "linear-gradient(180deg, rgba(5, 10, 25, 0.3) 0%, rgba(8, 15, 30, 0.2) 40%, rgba(5, 10, 25, 0.35) 100%)"
+        overlayDay: "linear-gradient(180deg, rgba(100, 150, 200, 0.1) 0%, rgba(80, 130, 180, 0.08) 50%, rgba(100, 150, 200, 0.12) 100%)",
+        overlayNight: "linear-gradient(180deg, rgba(5, 10, 25, 0.2) 0%, rgba(8, 15, 30, 0.12) 40%, rgba(5, 10, 25, 0.25) 100%)"
     },
     storm: {
         video: "https://assets.mixkit.co/videos/preview/mixkit-thunderstorm-with-lightning-flashes-in-the-night-42289-large.mp4",
         color: "#a855f7",
         glow: "0 0 25px rgba(168, 85, 247, 0.4)",
         icon: "<i class='bx bx-cloud-lightning'></i>",
-        overlayDay: "linear-gradient(180deg, rgba(80, 60, 100, 0.2) 0%, rgba(60, 50, 80, 0.15) 50%, rgba(80, 60, 100, 0.25) 100%)",
-        overlayNight: "linear-gradient(180deg, rgba(5, 3, 15, 0.3) 0%, rgba(10, 5, 20, 0.2) 40%, rgba(5, 3, 15, 0.35) 100%)"
+        overlayDay: "linear-gradient(180deg, rgba(80, 60, 100, 0.1) 0%, rgba(60, 50, 80, 0.08) 50%, rgba(80, 60, 100, 0.12) 100%)",
+        overlayNight: "linear-gradient(180deg, rgba(5, 3, 15, 0.2) 0%, rgba(10, 5, 20, 0.12) 40%, rgba(5, 3, 15, 0.25) 100%)"
     },
     snow: {
         video: "https://assets.mixkit.co/videos/preview/mixkit-snow-falling-on-pine-trees-31649-large.mp4",
         color: "#3b82f6",
         glow: "0 0 25px rgba(59, 130, 246, 0.3)",
         icon: "<i class='bx bx-cloud-snow'></i>",
-        overlayDay: "linear-gradient(180deg, rgba(220, 230, 245, 0.2) 0%, rgba(200, 215, 240, 0.1) 50%, rgba(220, 230, 245, 0.25) 100%)",
-        overlayNight: "linear-gradient(180deg, rgba(8, 12, 25, 0.25) 0%, rgba(12, 18, 30, 0.15) 40%, rgba(8, 12, 25, 0.3) 100%)"
+        overlayDay: "linear-gradient(180deg, rgba(220, 230, 245, 0.1) 0%, rgba(200, 215, 240, 0.05) 50%, rgba(220, 230, 245, 0.12) 100%)",
+        overlayNight: "linear-gradient(180deg, rgba(8, 12, 25, 0.18) 0%, rgba(12, 18, 30, 0.1) 40%, rgba(8, 12, 25, 0.22) 100%)"
     },
     mist: {
         video: "https://assets.mixkit.co/videos/preview/mixkit-dense-fog-covering-forest-trees-34375-large.mp4",
         color: "#64748b",
         glow: "0 0 25px rgba(100, 116, 139, 0.2)",
         icon: "<i class='bx bx-wind'></i>",
-        overlayDay: "linear-gradient(180deg, rgba(210, 220, 235, 0.3) 0%, rgba(195, 205, 220, 0.2) 50%, rgba(210, 220, 235, 0.35) 100%)",
-        overlayNight: "linear-gradient(180deg, rgba(12, 15, 25, 0.35) 0%, rgba(15, 18, 30, 0.25) 40%, rgba(12, 15, 25, 0.4) 100%)"
+        overlayDay: "linear-gradient(180deg, rgba(210, 220, 235, 0.15) 0%, rgba(195, 205, 220, 0.1) 50%, rgba(210, 220, 235, 0.18) 100%)",
+        overlayNight: "linear-gradient(180deg, rgba(12, 15, 25, 0.25) 0%, rgba(15, 18, 30, 0.15) 40%, rgba(12, 15, 25, 0.3) 100%)"
     }
 };
+
+// High-quality real weather photographs for immersive backgrounds (Unsplash CDN)
+// Each weather type has day and night variants for accurate atmosphere
+const weatherBackgrounds = {
+    clear: {
+        day: "https://images.unsplash.com/photo-1601297183305-6df142704ea2?w=1920&q=80&auto=format&fit=crop",
+        night: "https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=1920&q=80&auto=format&fit=crop"
+    },
+    clouds: {
+        day: "https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1920&q=80&auto=format&fit=crop",
+        night: "https://images.unsplash.com/photo-1501630834273-4b5604d2ee31?w=1920&q=80&auto=format&fit=crop"
+    },
+    rain: {
+        day: "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=1920&q=80&auto=format&fit=crop",
+        night: "https://images.unsplash.com/photo-1501999635878-71cb5379c2d8?w=1920&q=80&auto=format&fit=crop"
+    },
+    storm: {
+        day: "https://images.unsplash.com/photo-1605727216801-e27ce1d0cc28?w=1920&q=80&auto=format&fit=crop",
+        night: "https://images.unsplash.com/photo-1461511669078-d46bf351cd6e?w=1920&q=80&auto=format&fit=crop"
+    },
+    snow: {
+        day: "https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=1920&q=80&auto=format&fit=crop",
+        night: "https://images.unsplash.com/photo-1548266652-99cf27701ab1?w=1920&q=80&auto=format&fit=crop"
+    },
+    mist: {
+        day: "https://images.unsplash.com/photo-1487621167305-5d248087c724?w=1920&q=80&auto=format&fit=crop",
+        night: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=1920&q=80&auto=format&fit=crop"
+    }
+};
+
+// Track which image slot is currently active for crossfade transitions
+let activeBgSlot = 'a';
+let currentBgUrl = '';
 
 // Inject Screen Shake keyframes into head
 const shakeStyle = document.createElement('style');
@@ -97,9 +130,8 @@ window.triggerScreenShake = function() {
     }
 };
 
-// ==========================================
 // Initialization
-// ==========================================
+
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Retrieve any existing theme override
     const storedTheme = localStorage.getItem('themeOverride');
@@ -159,6 +191,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 14. Smooth navigation scrolling
     setupSidebarNavigation();
+
+    // 15. Background image parallax depth effect
+    setupBgParallax();
+
+    // 16. Preload weather background images for smooth transitions
+    preloadWeatherImages();
 });
 
 // Prompt coordinates GPS locator
@@ -181,9 +219,8 @@ function triggerInitialGeolocation() {
     }
 }
 
-// ==========================================
 // Weather Fetch & API Integration
-// ==========================================
+
 async function fetchWeather(city) {
     try {
         const response = await fetch(`/api/weather?city=${encodeURIComponent(city)}`);
@@ -303,9 +340,8 @@ window.quickSearch = function(city) {
     fetchWeather(city);
 };
 
-// ==========================================
 // UI Updates
-// ==========================================
+
 function updateUI(data) {
     // Top headers
     document.getElementById('header-city-title').innerHTML = `Weather Dashboard in <strong>${data.city}, ${data.country}</strong>`;
@@ -451,9 +487,8 @@ function getThemeConfig(condition) {
     return weatherConfigs.clear;
 }
 
-// ==========================================
 // 3D Perspective Card Tilt
-// ==========================================
+
 function setupCard3DTilt() {
     const card = document.getElementById('tilt-card');
     if (!card) return;
@@ -484,9 +519,8 @@ function setupCard3DTilt() {
     });
 }
 
-// ==========================================
 // Forecast Chart.js Configuration
-// ==========================================
+
 function setupForecastChartTabs() {
     const tabs = document.querySelectorAll('.chart-tab');
     tabs.forEach(tab => {
@@ -612,9 +646,8 @@ function hexToRGBA(hex, alpha) {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-// ==========================================
 // Satellite Coordinate Map (Leaflet)
-// ==========================================
+
 function updateMap(lat, lon, cityName) {
     const mapDiv = document.getElementById('weather-map');
     if (!mapDiv) return;
@@ -664,9 +697,8 @@ function updateMap(lat, lon, cityName) {
     }
 }
 
-// ==========================================
 // Day/Night Theme Toggler Logic
-// ==========================================
+
 function setupThemeToggleButton() {
     const toggleBtn = document.getElementById('theme-toggle-btn');
     if (!toggleBtn) return;
@@ -704,10 +736,10 @@ function setDayNightMode(isDay) {
         }
     }
 
-    // Update video opacity for immersive backgrounds
+    // Update video opacity (lower to let background photo show)
     const video = document.getElementById('bg-video');
     if (video) {
-        video.style.opacity = isDay ? 0.9 : 0.85;
+        video.style.opacity = isDay ? 0.45 : 0.55;
     }
 
     // Update overlay tint for current weather type
@@ -718,6 +750,12 @@ function setDayNightMode(isDay) {
         if (conf) {
             overlay.style.background = isDay ? (conf.overlayDay || '') : (conf.overlayNight || '');
         }
+    }
+
+    // Swap background photograph for the correct day/night variant
+    if (currentWeatherData) {
+        const weatherType = getWeatherType(currentWeatherData.condition);
+        updateWeatherBackground(weatherType, isDay);
     }
 
     const tileUrl = isDay 
@@ -744,9 +782,8 @@ function getWeatherType(condition) {
     return 'clear';
 }
 
-// ==========================================
 // Recent Searches Dropdown & History
-// ==========================================
+
 function setupRecentSearches(input) {
     const recentBox = document.getElementById('recent-box');
     const suggestionsBox = document.getElementById('suggestions-box');
@@ -805,9 +842,8 @@ function renderRecentList(list) {
     });
 }
 
-// ==========================================
 // HTML5 Geolocation Current Location logic
-// ==========================================
+
 function setupGeolocationBtn() {
     const locBtn = document.getElementById('location-btn');
     if (!locBtn) return;
@@ -831,9 +867,8 @@ function setupGeolocationBtn() {
     });
 }
 
-// ==========================================
 // Unit Toggler (°C <-> °F)
-// ==========================================
+
 function setupUnitToggler() {
     const btnC = document.getElementById('unit-c');
     const btnF = document.getElementById('unit-f');
@@ -862,9 +897,8 @@ function refreshUnitUI() {
     }
 }
 
-// ==========================================
 // Popular Autocomplete suggestions
-// ==========================================
+
 function setupAutocomplete(input) {
     const suggestions = document.getElementById('suggestions-box');
     const recentBox = document.getElementById('recent-box');
@@ -902,9 +936,8 @@ function setupAutocomplete(input) {
     });
 }
 
-// ==========================================
 // Voice Speech Search Setup
-// ==========================================
+
 function setupVoiceSearch() {
     const voiceBtn = document.getElementById('voice-btn');
     const input = document.getElementById('city-input');
@@ -947,9 +980,8 @@ function setupVoiceSearch() {
     };
 }
 
-// ==========================================
 // Digital clock
-// ==========================================
+
 function startClock() {
     setInterval(() => {
         const now = new Date();
@@ -963,9 +995,7 @@ function startClock() {
     }, 1000);
 }
 
-// ==========================================
 // VFX State Sync automatically
-// ==========================================
 
 // All valid weather body class names
 const weatherBodyClasses = ['weather-clear', 'weather-rain', 'weather-storm', 'weather-snow', 'weather-clouds', 'weather-mist'];
@@ -1009,20 +1039,24 @@ function triggerVFXState(type) {
 
     const video = document.getElementById('bg-video');
     const overlay = document.querySelector('.video-overlay');
+    const isDay = document.body.classList.contains('day-mode');
+
+    // Switch the real weather background photograph with crossfade
+    updateWeatherBackground(type, isDay);
+
     if (video && weatherConfigs[type]) {
         const conf = weatherConfigs[type];
-        const isDay = document.body.classList.contains('day-mode');
         
-        // Fade out briefly during swap
-        video.style.opacity = 0.1;
+        // Fade out briefly during video swap
+        video.style.opacity = 0.05;
         setTimeout(() => {
             video.src = conf.video;
             video.load();
             video.play().catch(e => console.log("Video auto play prevented", e));
             
-            // High opacity for immersive weather background
-            video.style.opacity = isDay ? 0.9 : 0.85;
-        }, 400);
+            // Reduced video opacity to let background photo show through
+            video.style.opacity = isDay ? 0.45 : 0.55;
+        }, 500);
 
         // Update overlay tint based on weather + time
         if (overlay) {
@@ -1060,9 +1094,9 @@ function updatePillHighlights(cityName) {
     });
 }
 
-// ==========================================
+
 // Sidebar navigation scrolling
-// ==========================================
+
 function setupSidebarNavigation() {
     const mapBtn = document.getElementById('nav-map-btn');
     const chartBtn = document.getElementById('nav-chart-btn');
@@ -1082,4 +1116,107 @@ function setupSidebarNavigation() {
             if (sec) sec.scrollIntoView({ behavior: 'smooth' });
         });
     }
+}
+
+// ==========================================================================
+// Immersive Weather Background Image System
+// ==========================================================================
+
+/**
+ * Crossfade-swap the background photograph to match the current weather
+ * Uses a dual-image slot system (A/B) for seamless CSS opacity transitions
+ */
+function updateWeatherBackground(weatherType, isDay) {
+    const bgConfig = weatherBackgrounds[weatherType];
+    if (!bgConfig) return;
+
+    const targetUrl = isDay ? bgConfig.day : bgConfig.night;
+    
+    // Skip if already showing this exact image
+    if (targetUrl === currentBgUrl) return;
+    currentBgUrl = targetUrl;
+
+    const imgA = document.getElementById('bg-image-a');
+    const imgB = document.getElementById('bg-image-b');
+    if (!imgA || !imgB) return;
+
+    // Determine which slot to load the new image into (the inactive one)
+    if (activeBgSlot === 'a') {
+        // Load new image into slot B, then crossfade B in and A out
+        imgB.src = targetUrl;
+        imgB.onload = () => {
+            imgB.classList.add('active');
+            imgA.classList.remove('active');
+            activeBgSlot = 'b';
+        };
+        // Fallback in case onload doesn't fire (cached image)
+        if (imgB.complete && imgB.naturalWidth > 0) {
+            imgB.classList.add('active');
+            imgA.classList.remove('active');
+            activeBgSlot = 'b';
+        }
+    } else {
+        // Load new image into slot A, then crossfade A in and B out
+        imgA.src = targetUrl;
+        imgA.onload = () => {
+            imgA.classList.add('active');
+            imgB.classList.remove('active');
+            activeBgSlot = 'a';
+        };
+        if (imgA.complete && imgA.naturalWidth > 0) {
+            imgA.classList.add('active');
+            imgB.classList.remove('active');
+            activeBgSlot = 'a';
+        }
+    }
+}
+
+/**
+ * Subtle parallax depth effect on the background image layer
+ * Mouse movement shifts the background slightly for 3D depth perception
+ */
+function setupBgParallax() {
+    const bgLayer = document.querySelector('.bg-image-layer');
+    if (!bgLayer) return;
+
+    // Maximum parallax shift in pixels
+    const MAX_SHIFT = 12;
+
+    // Use throttled mousemove for performance
+    let ticking = false;
+    document.addEventListener('mousemove', (e) => {
+        if (ticking) return;
+        ticking = true;
+
+        requestAnimationFrame(() => {
+            const xRatio = (e.clientX / window.innerWidth - 0.5) * 2;  // -1 to 1
+            const yRatio = (e.clientY / window.innerHeight - 0.5) * 2; // -1 to 1
+
+            const shiftX = -(xRatio * MAX_SHIFT);
+            const shiftY = -(yRatio * MAX_SHIFT);
+
+            bgLayer.style.transform = `translate3d(${shiftX}px, ${shiftY}px, 0) scale(1.05)`;
+            ticking = false;
+        });
+    });
+}
+
+/**
+ * Preload all weather background images to ensure instant transitions
+ * Loads images in the background without blocking UI
+ */
+function preloadWeatherImages() {
+    const allUrls = [];
+    Object.values(weatherBackgrounds).forEach(bg => {
+        if (bg.day) allUrls.push(bg.day);
+        if (bg.night) allUrls.push(bg.night);
+    });
+
+    // Stagger preloads to avoid bandwidth congestion
+    allUrls.forEach((url, index) => {
+        setTimeout(() => {
+            const img = new Image();
+            img.src = url;
+        }, index * 300);
+    });
 }

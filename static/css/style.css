@@ -43,9 +43,75 @@ body {
     display: flex;
 }
 
-/* ==========================================================================
-   Background Renderers (Three.js WebGL & Dynamic Video Backgrounds)
-   ========================================================================== */
+/*
+   Background Renderers — Layered Immersive System
+   Layer order (back to front):
+   1. Real weather photograph (.bg-image-layer) — z-index: -4
+   2. Video background (.video-background) — z-index: -3
+   3. Three.js WebGL (.three-bg-canvas) — z-index: -2
+   4. Cloud fog overlay (.clouds-overlay) — z-index: -2
+   5. Dashboard UI — z-index: 5
+   */
+
+/* Immersive real weather photograph background layer */
+.bg-image-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -4;
+    pointer-events: none;
+    overflow: hidden;
+    background: #060a14;
+}
+
+.bg-photo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+    transform: scale(1.05);
+    filter: brightness(0.75) saturate(1.2);
+}
+
+.bg-photo.active {
+    opacity: 1;
+}
+
+/* Cinematic vignette overlay for premium depth */
+.bg-image-vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center,
+        transparent 45%,
+        rgba(0, 0, 0, 0.2) 70%,
+        rgba(0, 0, 0, 0.55) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Day mode vignette is lighter */
+.day-mode .bg-image-vignette {
+    background: radial-gradient(ellipse at center,
+        transparent 50%,
+        rgba(0, 0, 0, 0.08) 70%,
+        rgba(0, 0, 0, 0.25) 100%);
+}
+
+/* Day mode photo brightness adjustment */
+.day-mode .bg-photo {
+    filter: brightness(0.95) saturate(1.15);
+}
+
 #three-bg-canvas {
     position: fixed;
     top: 0;
@@ -71,7 +137,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.85;
+    opacity: 0.55;
     transition: opacity 1.8s ease;
 }
 
@@ -482,6 +548,7 @@ body {
     letter-spacing: -2px;
     background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -1117,11 +1184,11 @@ body {
 }
 
 .day-mode .video-background video {
-    opacity: 0.9;
+    opacity: 0.45;
 }
 
 .day-mode .video-overlay {
-    background: linear-gradient(180deg, rgba(240, 245, 255, 0.35) 0%, rgba(255, 255, 255, 0.2) 40%, rgba(240, 245, 255, 0.4) 100%);
+    background: linear-gradient(180deg, rgba(240, 245, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(240, 245, 255, 0.25) 100%);
 }
 
 .day-mode .sidebar {
@@ -1215,6 +1282,7 @@ body {
 
 .day-mode .temp-huge {
     background: linear-gradient(180deg, #0f172a 0%, #334155 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }

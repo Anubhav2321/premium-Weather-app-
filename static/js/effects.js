@@ -210,9 +210,7 @@ class ThreeWeather {
         }
     }
 
-    // ==========================================
     // Visual Condition Generators
-    // ==========================================
 
     createClearVFX() {
         const isDay = document.body.classList.contains('day-mode');
@@ -604,9 +602,8 @@ class ThreeWeather {
         this.scene.add(this.particles);
     }
 
-    // ==========================================
     // Render loop animation & interactions
-    // ==========================================
+    
 
     animate() {
         this.animationFrameId = requestAnimationFrame(() => this.animate());
