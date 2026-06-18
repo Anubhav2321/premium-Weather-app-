@@ -1,6 +1,4 @@
-/* ==========================================================================
-   NexGen Premium Weather Dashboard - Styling & Design System
-   ========================================================================== */
+/* NexGen Premium Weather Dashboard - Styling & Design System*/
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
@@ -171,9 +169,7 @@ body {
     100% { transform: translateX(-50vw); }
 }
 
-/* ==========================================================================
-   Sidebar & Quick Simulation Toggles
-   ========================================================================== */
+/* Sidebar & Quick Simulation Toggles */
 .sidebar {
     width: 80px;
     background: rgba(5, 10, 20, 0.5);
@@ -243,9 +239,7 @@ body {
     opacity: 0.6;
 }
 
-/* ==========================================================================
-   Dashboard Main Container
-   ========================================================================== */
+/* Dashboard Main Container */
 .dashboard {
     flex: 1;
     padding: 30px 40px;
@@ -445,9 +439,7 @@ body {
 }
 
 
-/* ==========================================================================
-   Grid Layout Areas
-   ========================================================================== */
+/* Grid Layout Areas */
 .dashboard-grid {
     display: grid;
     grid-template-columns: 380px 1fr;
@@ -467,9 +459,7 @@ body {
     gap: 30px;
 }
 
-/* ==========================================================================
-   Hero 3D Card Tilt Weather Card
-   ========================================================================== */
+/*Hero 3D Card Tilt Weather Card */
 .hero-tilt-wrapper {
     perspective: 1500px;
     width: 100%;
@@ -601,9 +591,7 @@ body {
     color: var(--theme-color);
 }
 
-/* ==========================================================================
-   Simulated Control Sidebar (Manual Visual Controls)
-   ========================================================================== */
+/* Simulated Control Sidebar (Manual Visual Controls) */
 .simulator-panel {
     background: rgba(10, 15, 30, 0.5);
     backdrop-filter: blur(30px) saturate(1.2);
@@ -697,9 +685,7 @@ body {
 }
 
 
-/* ==========================================================================
-   Details Grid & Visual Cards
-   ========================================================================== */
+/* Details Grid & Visual Cards */
 .details-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -802,9 +788,7 @@ body {
     line-height: 1.4;
 }
 
-/* ==========================================================================
-   Chart Panel (Forecast Trend Visual)
-   ========================================================================== */
+/* Chart Panel (Forecast Trend Visual) */
 .chart-panel {
     background: rgba(10, 15, 30, 0.55);
     backdrop-filter: blur(30px) saturate(1.2);
@@ -842,9 +826,7 @@ body {
     width: 100%;
 }
 
-/* ==========================================================================
-   Map Panel (Leaflet Location Tracker)
-   ========================================================================== */
+/* Map Panel (Leaflet Location Tracker) */
 .map-panel {
     background: rgba(10, 15, 30, 0.55);
     backdrop-filter: blur(30px) saturate(1.2);
@@ -914,9 +896,8 @@ body {
     100% { transform: scale(0.8); opacity: 0.5; box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
 }
 
-/* ==========================================================================
-   CSS Micro Animations & Pulses
-   ========================================================================== */
+/* 
+   CSS Micro Animations & Pulses */
 @keyframes pulseGlow {
     0% { filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.4)); }
     50% { filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.7)); }
@@ -978,9 +959,7 @@ body {
     }
 }
 
-/* ==========================================================================
-   Forecast Panel & Overview (8-Day Daily Forecast)
-   ========================================================================== */
+/* Forecast Panel & Overview (8-Day Daily Forecast) */
 .forecast-panel {
     background: rgba(10, 15, 30, 0.55);
     backdrop-filter: blur(30px) saturate(1.2);
@@ -1148,9 +1127,8 @@ body {
     max-width: 100%;
 }
 
-/* ==========================================================================
-   Day/Night Theme Styles Overrides
-   ========================================================================== */
+/* 
+   Day/Night Theme Styles Overrides */
 .theme-toggle-container {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-color);
@@ -1336,9 +1314,7 @@ body {
     color: #fff !important;
 }
 
-/* ==========================================================================
-   Frosted Wave Skeleton Loader overlay
-   ========================================================================== */
+/* Frosted Wave Skeleton Loader overlay*/
 .skeleton-overlay {
     position: fixed;
     top: 0;
@@ -1425,9 +1401,7 @@ body {
 .chart-card-sk { height: 230px; border-radius: 24px; }
 .map-card-sk { height: 350px; border-radius: 24px; }
 
-/* ==========================================================================
-   Dashboard Navigation Button
-   ========================================================================== */
+/*Dashboard Navigation Button */
 .dashboard-nav-btn {
     background: rgba(56, 189, 248, 0.1);
     border: 1px solid rgba(56, 189, 248, 0.2);
@@ -1462,9 +1436,9 @@ body {
     box-shadow: var(--theme-glow);
 }
 
-/* ==========================================================================
+/* 
    Chart Tabbing controls
-   ========================================================================== */
+    */
 .chart-header {
     display: flex;
     justify-content: space-between;
